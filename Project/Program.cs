@@ -1,7 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Project.Business.Abstract;
+using Project.Business.Concrete;
 using Project.Core.Security.Encryption;
 using Project.Core.Security.JWT;
+using Project.DataAccess.Abstract;
+using Project.DataAccess.Concrete;
 using System.Net;
 
 namespace Project
@@ -14,6 +19,14 @@ namespace Project
 
             builder.Services.AddSingleton<IConfiguration>(provider => builder.Configuration);
             builder.Services.AddSingleton<ITokenHelper, JwtHelper>();
+            builder.Services.AddDbContextFactory<ProjectDbContext>(
+                options => options.UseSqlServer(builder.Configuration.GetConnectionString("ProjectConnectionString"))
+            );
+            builder.Services.AddSingleton<IUserDal,EfUserDal>();
+            builder.Services.AddSingleton<IUserDal, EfUserDal>();
+            builder.Services.AddSingleton<ITokenHelper,JwtHelper>();
+            builder.Services.AddSingleton<IUserService,UserManager>();
+            builder.Services.AddSingleton<IAuthService,AuthManager>();
 
             var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
