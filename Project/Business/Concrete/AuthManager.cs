@@ -48,7 +48,7 @@ namespace Project.Business.Concrete
                 PasswordSalt = passwordSalt,
                 Username = registerDto.Username,
                 Email = registerDto.Email,
-                Role = "User",
+                Role = "Student",
                 RefreshToken = ""
             };
             _userService.Add(user);

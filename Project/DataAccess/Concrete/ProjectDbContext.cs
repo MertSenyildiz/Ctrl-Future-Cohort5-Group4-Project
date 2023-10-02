@@ -9,5 +9,8 @@ namespace Project.DataAccess.Concrete
         public ProjectDbContext(DbContextOptions options):base(options)
         {}
         public DbSet<User> Users { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Assignment> Assignments { get; set; }
+        public DbSet<Enrollment> Enrollments { get; set; }
     }
 }

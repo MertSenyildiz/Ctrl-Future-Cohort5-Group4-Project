@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Project.Business.Abstract;
 using Project.Core.Extensions;
+using Project.Core.Helpers.File;
 using Project.Core.Security.Hashing;
 using Project.Core.Security.JWT;
 using Project.DataAccess.Abstract;
@@ -17,21 +19,23 @@ namespace Project.Controllers
         private readonly ILogger<HomeController> _logger;
         ITokenHelper _tokenHelper;
         IUserDal _userDal;
-        public HomeController(ILogger<HomeController> logger,ITokenHelper tokenHelper,IUserDal userDal)
+        IUserService _userService;
+        IFileHelper _fileHelper;
+        public HomeController(ILogger<HomeController> logger,ITokenHelper tokenHelper,IUserDal userDal,IUserService userService,IFileHelper fileHelper)
         {
             _logger = logger;
             _tokenHelper = tokenHelper;
             _userDal = userDal;
+            _fileHelper = fileHelper;
+            _userService= userService;
         }
-        [Authorize(Roles ="User")]
         public IActionResult Index()
         {
             return View();
         }
-        [Authorize(Roles ="Creator")]
         public IActionResult Privacy()
         {
-            return View();
+           return View();
         }
 
         [HttpPost("login")]
@@ -43,7 +47,7 @@ namespace Project.Controllers
             Response.Cookies.Append("X-Access-Token", token.Token,new CookieOptions { Expires=token.Expiration,HttpOnly=true});
             return Ok(token);
         }
-        [HttpPost("kayit")]
+        [HttpGet("kayit")]
         public IActionResult Kayit()
         {
             var password = "sfjsdjsdf";
@@ -61,7 +65,7 @@ namespace Project.Controllers
 
             var token = _tokenHelper.CreateAccesToken(user);
             user.RefreshToken= token.RefreshToken;
-            _userDal.Add(user);
+            _userService.Add(user);
             Response.Cookies.Append("X-Access-Token", token.Token, new CookieOptions { Expires = token.Expiration, HttpOnly = true });
             return Ok(token);
         }
@@ -79,6 +83,13 @@ namespace Project.Controllers
                 return Ok(jwt);
             }
             return NotFound();
+        }
+
+        [HttpPost("savefile")]
+        public async Task<IActionResult> SaveFile([FromForm]IFormFile file)
+        {
+            var path=await _fileHelper.SaveFileAsync(file);
+            return Ok(path);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

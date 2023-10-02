@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Project.Business.Abstract;
 using Project.Business.Concrete;
+using Project.Core.Extensions;
+using Project.Core.Helpers.File;
 using Project.Core.Security.Encryption;
 using Project.Core.Security.JWT;
 using Project.DataAccess.Abstract;
@@ -17,16 +19,10 @@ namespace Project
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddSingleton<IConfiguration>(provider => builder.Configuration);
-            builder.Services.AddSingleton<ITokenHelper, JwtHelper>();
-            builder.Services.AddDbContextFactory<ProjectDbContext>(
-                options => options.UseSqlServer(builder.Configuration.GetConnectionString("ProjectConnectionString"))
-            );
-            builder.Services.AddSingleton<IUserDal,EfUserDal>();
-            builder.Services.AddSingleton<IUserDal, EfUserDal>();
-            builder.Services.AddSingleton<ITokenHelper,JwtHelper>();
-            builder.Services.AddSingleton<IUserService,UserManager>();
-            builder.Services.AddSingleton<IAuthService,AuthManager>();
+            //builder.Services.AddSingleton<IConfiguration>(provider => builder.Configuration);
+            builder.Services.InjectDbContextFactory(builder.Configuration);
+            builder.Services.InjectServices();
+            builder.Services.InjectConfigurableServices(builder.Configuration);
 
             var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -63,20 +59,22 @@ namespace Project
             
             var app = builder.Build();
 
+            app.ConfigureCustomExceptionMiddleware();
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Home/Error");
+                //app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            
 
+            app.UseMiddleware<RefreshTokenMiddleware>();
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            
             app.UseAuthentication();
 
             //unauthorized Page redirection
