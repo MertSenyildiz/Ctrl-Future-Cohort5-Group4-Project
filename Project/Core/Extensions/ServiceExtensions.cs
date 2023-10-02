@@ -13,11 +13,15 @@ namespace Project.Core.Extensions
             public static void InjectServices(this IServiceCollection services)
             {
                 services.AddSingleton<ITokenHelper, JwtHelper>();
+
                 services.AddSingleton<IUserDal, EfUserDal>();
-                services.AddSingleton<IUserDal, EfUserDal>();
-                services.AddSingleton<ITokenHelper, JwtHelper>();
+                services.AddSingleton<ICourseDal, EfCourseDal>();
+                services.AddSingleton<IEnrollmentDal, EfEnrollmentDal>();
+                services.AddSingleton<IAssignmentDal, EfAssignmentDal>();
+
                 services.AddSingleton<IUserService, UserManager>();
                 services.AddSingleton<IAuthService, AuthManager>();
+                services.AddSingleton<IEnrollmentService, EnrollmentManager>();
             }
             public static void InjectDbContextFactory(this IServiceCollection services, IConfiguration configuration)
             {

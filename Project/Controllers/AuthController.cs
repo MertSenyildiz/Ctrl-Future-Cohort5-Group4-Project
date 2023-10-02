@@ -47,17 +47,25 @@ namespace Project.Controllers
             }
             return BadRequest();
         }
-        public IActionResult RefreshToken(string refreshToken,string returnUrl)
+        public IActionResult RefreshToken(string returnUrl)
         {
-            var user = _authService.RefreshToken(refreshToken);
-            if(user != null)
-            {
-                var token = _authService.CreateAccessToken(user);
-                AddToCookie("X-Access-Token", token.Token, token.Expiration);
-                AddToCookie("X-Refresh-Token", token.RefreshToken, DateTime.Now.AddDays(7));
-                Redirect(returnUrl);
+            string refreshToken;
+            if ((refreshToken = HttpContext.Request.Cookies["X-Refresh-Token"]) is not null){
+                var user = _authService.RefreshToken(refreshToken);
+                if (user != null)
+                {
+                    var token = _authService.CreateAccessToken(user);
+                    AddToCookie("X-Access-Token", token.Token, token.Expiration);
+                    AddToCookie("X-Refresh-Token", token.RefreshToken, DateTime.Now.AddDays(7));
+                    if(Url.IsLocalUrl(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                        
+                }
             }
             return Redirect("/");
+           
         }
 
         private void AddToCookie(string key, string value,DateTimeOffset exp)
