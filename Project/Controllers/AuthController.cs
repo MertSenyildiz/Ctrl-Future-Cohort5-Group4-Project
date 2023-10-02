@@ -71,6 +71,11 @@ namespace Project.Controllers
            
         }
 
+        public IActionResult Login()
+        {
+            return View();
+        }
+
         private void AddToCookie(string key, string value,DateTimeOffset exp)
         {
             Response.Cookies.Append(key, value, new CookieOptions { Expires = exp, HttpOnly = true });
