@@ -19,7 +19,7 @@ namespace Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login([FromBody]UserLoginDto loginDto) 
+        public IActionResult Login(UserLoginDto loginDto,string returnUrl) 
         {
             var user=_authService.Login(loginDto);
             if(user != null)
@@ -27,12 +27,16 @@ namespace Project.Controllers
                 var token=_authService.CreateAccessToken(user);
                 AddToCookie("X-Access-Token", token.Token, token.Expiration);
                 AddToCookie("X-Refresh-Token", token.RefreshToken,DateTime.Now.AddDays(7));
-                return Ok(token);
+                if (Url.IsLocalUrl(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+                return Redirect("/");
             }
-            return BadRequest();
+            return Login();
         }
         [HttpPost]
-        public IActionResult Register([FromBody]UserRegisterDto registerDto)
+        public IActionResult Register(UserRegisterDto registerDto)
         {
             if(ModelState.IsValid)
             {
@@ -48,7 +52,7 @@ namespace Project.Controllers
                     }
                 }
             }
-            return BadRequest(ModelState.ErrorCount);
+            return Register();
         }
         public IActionResult RefreshToken(string returnUrl)
         {
@@ -72,6 +76,13 @@ namespace Project.Controllers
         }
 
         public IActionResult Login()
+        {
+            var address=new Uri(Request.Headers["Referer"]);
+            ViewData["returnUrl"]=address.PathAndQuery;
+            return View();
+        }
+
+        public IActionResult Register()
         {
             return View();
         }

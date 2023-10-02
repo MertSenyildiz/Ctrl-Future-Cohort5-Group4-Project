@@ -5,26 +5,31 @@
     Layout="_EmptyLayout";
     ViewData["Title"] = "Login Page";
 }
-<style>
-        .my-spacing {
-            margin-bottom: 10px;
-        }
-    </style>
-<div class="container mx-6 col-sm-6 d-flex justify-content-center " data-new-gr-c-s-check-loaded="14.1129.0" data-gr-ext-installed=""> 
+@using Project.Models
+@model  UserLoginDto
+<div class="container mx-6 col-sm-6 d-flex justify-content-center vertical-center" data-new-gr-c-s-check-loaded="14.1129.0" data-gr-ext-installed=""> 
     <div class="row">
-          <form asp-action="Login" asp-controller="Auth" method="POST" class="form-signin">
+          <form asp-action="Login" asp-controller="Auth" method="POST" class="form-signin" asp-route-returnUrl="@ViewData["returnUrl"]">
               <img src="~/Content/img/Agilearn.png" alt="Image" class="img-fluid my-spacing">
             <h1 class="h3 mb-3 font-weight-normal">Sign In To Your Account</h1>
-            <label for="inputEmail" class="sr-only">Email address</label>
-            <input type="email" id="inputEmail" class="form-control my-spacing" placeholder="Email address" required="" autofocus="">
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPassword" class="form-control my-spacing" placeholder="Password" required="">
+
+            <span asp-validation-for="Email" class="text-danger"> </span>
+            <label asp-for="Email" class="sr-only">Email address</label>
+            <input asp-for="Email" class="form-control my-spacing" placeholder="Email address"  autofocus="">
+
+            <span asp-validation-for="Password" class="text-danger"> </span>
+            <label asp-for="Password" class="sr-only">Password</label>
+            <input type="password" asp-for="Password" class="form-control my-spacing" placeholder="Password">
+            
+
             <div class="checkbox mb-3">
               <label>
                 <input type="checkbox" value="remember-me"> Remember me
               </label>
             </div>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <br>
+            <div class="justify-content-center"> <a class="link-secondary" asp-action="Register">Create an account</a></div>
           </form>
         </div>
  </div>

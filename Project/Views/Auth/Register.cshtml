@@ -1,0 +1,36 @@
+﻿@{
+    Layout="_EmptyLayout";
+    ViewData["Title"] = "Register Page";
+}
+@using Project.Models
+@model  UserRegisterDto
+
+<div class="container mx-6 col-sm-6 d-flex justify-content-center align-items-center vertical-center"
+        data-new-gr-c-s-check-loaded="14.1129.0" data-gr-ext-installed="">
+        <div class="row">
+            <form method="POST" asp-action="Register" class="form-signin">
+                <img src="~/Content/img/Agilearn.png" alt="Image" class="img-fluid my-spacing">
+
+                <h1 class="h3 mb-3 font-weight-normal ">Join AgiLearn!</h1>
+                <span asp-validation-for="Username" class="text-danger"> </span>
+                <label asp-for="Username" class="sr-only">Username</label>
+                <input type="username" asp-for="Username" class="form-control my-spacing" placeholder="Username" autofocus="">
+                
+                <span asp-validation-for="Email" class="text-danger"> </span>
+                <label asp-for="Email" class="sr-only">Email address</label>
+                <input asp-for="Email" class="form-control my-spacing" placeholder="Email Address" >
+                
+                <span asp-validation-for="Password" class="text-danger"> </span>
+                <label asp-for="Password" class="sr-only">Password</label>
+                <input type="password" asp-for="Password" class="form-control my-spacing" placeholder="Password">
+                
+                <span asp-validation-for="PasswordVerify" class="text-danger"> </span>
+                <label asp-for="PasswordVerify" class="sr-only">Password Again</label>
+                <input type="password" asp-for="PasswordVerify" class="form-control my-spacing" placeholder="Password Again">
+                
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Create an Account</button>
+                <br>
+                <div class="justify-text-center"><a class="link-secondary" asp-action="Login">Already have an account</a></div>
+            </form>
+        </div>
+    </div>
