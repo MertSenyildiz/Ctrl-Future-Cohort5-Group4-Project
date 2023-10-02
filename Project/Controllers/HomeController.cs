@@ -33,7 +33,7 @@ namespace Project.Controllers
         {
             return View();
         }
-        [Authorize(Roles ="Student")]
+        [Authorize(Roles ="Student,Admin")]
         public IActionResult Privacy()
         {
            return View();

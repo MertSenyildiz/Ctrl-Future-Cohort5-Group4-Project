@@ -34,18 +34,21 @@ namespace Project.Controllers
         [HttpPost]
         public IActionResult Register([FromBody]UserRegisterDto registerDto)
         {
-            if (!_authService.IsUserExist(registerDto.Email))
+            if(ModelState.IsValid)
             {
-                var user = _authService.Register(registerDto);
-                if (user != null)
+                if (!_authService.IsUserExist(registerDto.Email))
                 {
-                    var token = _authService.CreateAccessToken(user);
-                    AddToCookie("X-Access-Token", token.Token, token.Expiration);
-                    AddToCookie("X-Refresh-Token", token.RefreshToken, DateTime.Now.AddDays(7));
-                    return Ok(token);
+                    var user = _authService.Register(registerDto);
+                    if (user != null)
+                    {
+                        var token = _authService.CreateAccessToken(user);
+                        AddToCookie("X-Access-Token", token.Token, token.Expiration);
+                        AddToCookie("X-Refresh-Token", token.RefreshToken, DateTime.Now.AddDays(7));
+                        return Ok(token);
+                    }
                 }
             }
-            return BadRequest();
+            return BadRequest(ModelState.ErrorCount);
         }
         public IActionResult RefreshToken(string returnUrl)
         {
