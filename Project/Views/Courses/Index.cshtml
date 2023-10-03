@@ -23,12 +23,19 @@
                         <a type="btn btn-success" asp-controller="Course" asp-action="Detail" asp-route-id="@item.ID" 
                             class="btn btn-sm btn-outline-secondary">View</a>
                         <a asp-controller="Course" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-outline-secondary">Edit</a>
-                        
-                        <a asp-controller="Course" asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-outline-secondary">Delete</a>
-                        <form asp-controller="Enrollments" asp-action="Enroll" method="POST" asp-route-courseId="@item.ID">
-                            <button type="submit" class="btn btn-sm btn-success">Enroll</button>
-                        </form>
-
+                        @if(Context.User.HasClaim(a=>true)){
+                            var role=Context.User.Claims(ClaimTypes.Role)[0];
+                            if(role=="Student"){
+                                <form asp-controller="Enrollments" asp-action="Enroll" method="POST" asp-route-courseId="@item.ID">
+                                    <button type="submit" class="btn btn-sm btn-success">Enroll</button>
+                                </form>
+                            }
+                            else if(role=="Admin"){
+                                <form asp-controller="Courses" asp-action="DeleteCourse" method="POST" asp-route-courseId="@item.ID">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            }
+                        }
                         </div>
                         <small class="text-muted">@item.Category</small>
                     </div>

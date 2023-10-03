@@ -43,6 +43,7 @@ namespace Project.Business.Concrete
         public void DeleteCourse(Guid courseId)
         {
             var course = _courseDal.Get(x => x.ID == courseId);
+            _fileSaver.DeleteFile(course.ImageUrl);
             _courseDal.Delete(course);
         }
 
@@ -72,7 +73,7 @@ namespace Project.Business.Concrete
             if(course is not null)
             {
                 course.EnrollmentCount++;
-                _courseDal.Update(course);
+                UpdateCourse(course);
             }
         }
 
@@ -82,7 +83,7 @@ namespace Project.Business.Concrete
             if (course is not null)
             {
                 course.EnrollmentCount--;
-                _courseDal.Update(course);
+                UpdateCourse(course);
             }
         }
     }

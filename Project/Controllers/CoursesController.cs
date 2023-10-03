@@ -30,6 +30,13 @@ namespace Project.Controllers
             await _courseService.CreateCourseAsync(course);
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public IActionResult DeleteCourse(string courseId)
+        {
+            _courseService.DeleteCourse(Guid.Parse(courseId));
+            return RedirectToAction("Index");
+        }
         public IActionResult Index()
         {
             var courses = _courseService.GetAllCourses();
