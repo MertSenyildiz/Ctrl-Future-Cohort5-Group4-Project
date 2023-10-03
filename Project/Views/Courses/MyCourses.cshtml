@@ -2,11 +2,11 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    ViewData["Title"]="Courses";
+
 }
 @model IEnumerable<Course>
-<div class="album py-5 bg-light">
-        <div class="container">
+
+<div class="container">
 
           <div class="row">
                 @foreach(var item in Model)
@@ -17,18 +17,11 @@
                     <div class="card-body">
                     <p class="card-text">@item.Title</p>
                      <p class="card-text">@item.Description</p>
-                     <p class="card-text">@item.EnrollmentCount People Take This Course</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
-                        <a type="btn btn-success" asp-controller="Course" asp-action="Detail" asp-route-id="@item.ID" 
-                            class="btn btn-sm btn-outline-secondary">View</a>
-                        <a asp-controller="Course" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-outline-secondary">Edit</a>
-                        
-                        <a asp-controller="Course" asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-outline-secondary">Delete</a>
-                        <form asp-controller="Enrollments" asp-action="Enroll" method="POST" asp-route-courseId="@item.ID">
-                            <button type="submit" class="btn btn-sm btn-success">Enroll</button>
+                        <form asp-controller="Enrollments" asp-action="Disenroll" asp-route-courseId="@item.ID" method="POST">
+                            <button type="submit" class="btn btn-sm btn-danger">Disenroll</button>
                         </form>
-
                         </div>
                         <small class="text-muted">@item.Category</small>
                     </div>
@@ -39,4 +32,3 @@
          
           </div>
         </div>
-      </div>

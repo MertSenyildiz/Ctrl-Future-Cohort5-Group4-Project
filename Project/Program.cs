@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Project.Business.Abstract;
 using Project.Business.Concrete;
 using Project.Core.Extensions;
-using Project.Core.Helpers.File;
+using Project.Core.Helpers.FileHelpers;
 using Project.Core.Security.Encryption;
 using Project.Core.Security.JWT;
 using Project.DataAccess.Abstract;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Project.Business.Abstract;
 using Project.Business.Concrete;
-using Project.Core.Helpers.File;
+using Project.Core.Helpers.FileHelpers;
 using Project.Core.Security.JWT;
 using Project.DataAccess.Abstract;
 using Project.DataAccess.Concrete;

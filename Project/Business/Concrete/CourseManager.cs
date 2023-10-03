@@ -1,5 +1,5 @@
 ﻿using Project.Business.Abstract;
-using Project.Core.Helpers.File;
+using Project.Core.Helpers.FileHelpers;
 using Project.DataAccess.Abstract;
 using Project.Models;
 using System;
@@ -59,6 +59,31 @@ namespace Project.Business.Concrete
         public List<Course> GetCoursesByInstructor(Guid instructorId)
         {
             return _courseDal.GetAll(x => x.ID == instructorId);
+        }
+
+        public List<Course> GetCoursesByUser(Guid userId)
+        {
+            return _courseDal.GetByUser(userId);
+        }
+
+        public void IncrementEnrollmentCout(Guid courseId)
+        {
+            var course = _courseDal.Get(c=>c.ID==courseId);
+            if(course is not null)
+            {
+                course.EnrollmentCount++;
+                _courseDal.Update(course);
+            }
+        }
+
+        public void DecrementEnrollmentCout(Guid courseId)
+        {
+            var course = _courseDal.Get(c => c.ID == courseId);
+            if (course is not null)
+            {
+                course.EnrollmentCount--;
+                _courseDal.Update(course);
+            }
         }
     }
 }

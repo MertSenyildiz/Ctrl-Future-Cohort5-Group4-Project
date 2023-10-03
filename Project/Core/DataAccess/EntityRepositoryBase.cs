@@ -7,7 +7,7 @@ namespace Project.Core.DataAccess
         where TContext : DbContext
         where TEntity : class,new()
     {
-        IDbContextFactory<TContext> _dbContextFactory;
+        protected IDbContextFactory<TContext> _dbContextFactory;
         public EntityRepositoryBase(IDbContextFactory<TContext> dbContextFactory)
         {
             _dbContextFactory = dbContextFactory;
@@ -37,7 +37,7 @@ namespace Project.Core.DataAccess
         public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
         {
             using var context = _dbContextFactory.CreateDbContext();
-            return filter == null ? context.Set<TEntity>().ToList() : context.Set<TEntity>().Where(filter).ToList();
+            return filter == null ? context.Set<TEntity>().AsNoTracking().ToList() : context.Set<TEntity>().AsNoTracking().Where(filter).ToList();
         }
 
         public void Update(TEntity entity)

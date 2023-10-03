@@ -3,15 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 using Project.Business.Abstract;
 using Project.Core.Extensions;
 using Project.Models;
+using System.Security.Claims;
 
 namespace Project.Controllers
 {
     public class CoursesController : Controller
     {
         ICourseService _courseService;
-        public CoursesController(ICourseService courseService)
+        IEnrollmentService _enrollmentService;
+        public CoursesController(ICourseService courseService,IEnrollmentService enrollmentService)
         {
             _courseService = courseService;
+            _enrollmentService = enrollmentService;
         }
         [Authorize(Roles ="Student")]
         public ActionResult Create() {
@@ -29,8 +32,43 @@ namespace Project.Controllers
         }
         public IActionResult Index()
         {
-            var course = _courseService.GetAllCourses();
-            return View(course);
+            var courses = _courseService.GetAllCourses();
+            if(HttpContext.User.Claims("id").Any())
+            {
+                if (HttpContext.User.Claims(ClaimTypes.Role)[0]=="Student")
+                {
+                    var alreadyEnrolledCourses = _courseService.GetCoursesByUser(Guid.Parse(HttpContext.User.Claims("id")[0])).Select(c=>c.ID);
+                    courses = courses.Where(c => !alreadyEnrolledCourses.Contains(c.ID)).ToList();
+                }
+                
+            }
+            return View(courses);
         }
+
+        [Authorize]
+        public IActionResult MyCourses()
+        {
+            ViewData["Title"] = HttpContext.User.Claims("username")[0] + "'s Courses";
+            var role = HttpContext.User.Claims(ClaimTypes.Role)[0];
+            IEnumerable<Course> courses=null;
+            switch (role)
+            {
+                case "Instructor":
+                    var insID = HttpContext.User.Claims("id")[0];
+                    courses = _courseService.GetCoursesByInstructor(Guid.Parse(insID));
+                    break;
+                case "Admin":
+                    courses=_courseService.GetAllCourses();
+                    break;
+                default:
+                    var uID = HttpContext.User.Claims("id")[0];
+                    courses = _courseService.GetCoursesByUser(Guid.Parse(uID));
+                    break;
+            }
+            return View(courses);
+            
+        }
+
+        
     }
 }

@@ -10,5 +10,9 @@ namespace Project.Business.Abstract
         Course GetCourseById(Guid courseId);
         List<Course> GetAllCourses();
         List<Course> GetCoursesByInstructor(Guid instructorId);
+        List<Course> GetCoursesByUser(Guid userId);
+
+        void IncrementEnrollmentCout(Guid courseId);
+        void DecrementEnrollmentCout(Guid courseId);
     }
 }
