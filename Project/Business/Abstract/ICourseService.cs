@@ -4,7 +4,7 @@ namespace Project.Business.Abstract
 {
     public interface ICourseService
     {
-        Task CreateCourse(CourseToAddDto course);
+        void CreateCourse(CourseToAddDto course);
         void UpdateCourse(Course course);
         void DeleteCourse(Guid courseId);
         Course GetCourseById(Guid courseId);
