@@ -1,4 +1,5 @@
 ﻿using Project.Business.Abstract;
+using Project.Core.Helpers.File;
 using Project.DataAccess.Abstract;
 using Project.Models;
 using System;
@@ -11,15 +12,27 @@ namespace Project.Business.Concrete
     {
         
         private readonly ICourseDal _courseDal;
+        IFileHelper _fileSaver;
 
-        public CourseManagement(ICourseDal courseDal)
+        public CourseManagement(ICourseDal courseDal,IFileHelper fileHelper)
         {
             _courseDal = courseDal;
+            _fileSaver = fileHelper;
         }
 
-        public void CreateCourse(Course course)
+        public async void CreateCourse(CourseToAddDto course)
         {
-            _courseDal.Add(course);
+            var courseToAdd = new Course
+            {
+                ID=Guid.NewGuid(),
+                Title=course.Title,
+                //InstructorID
+                Description=course.Description,
+                Category=course.Category,
+                EnrollmentCount=0,
+                ImageUrl=await _fileSaver.SaveFileAsync(course.ImageFile),
+            };
+            _courseDal.Add(courseToAdd);
         }
 
         public void UpdateCourse(Course course)

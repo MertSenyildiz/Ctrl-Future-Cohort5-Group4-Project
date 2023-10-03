@@ -10,8 +10,6 @@ namespace Project.Models
         public Guid InstructorID { get; set; }
         public string Category { get; set; }
 
-        public string CategoryName { get; set; }
-
         public int EnrollmentCount { get; set; }
 
         public string ImageUrl { get; set; }

@@ -11,11 +11,13 @@
         }
         public async Task<string> SaveFileAsync(IFormFile file)
         {
-            var stream=file.OpenReadStream();
-            
-            string filePath=Path.Combine(path, Guid.NewGuid().ToString() +Path.GetExtension(file.FileName));
-            using FileStream fileStream = new FileStream(filePath, FileMode.Create);
-            await file.CopyToAsync(fileStream);
+            string filePath=Path.Combine(path,"Agilearn.png");
+            if(file.Length > 0 )
+            {
+                filePath = Path.Combine(path, Guid.NewGuid().ToString() + Path.GetExtension(file.FileName));
+                using FileStream fileStream = new FileStream(filePath, FileMode.Create);
+                await file.CopyToAsync(fileStream);
+            }
             return filePath.Replace("wwwroot","~");
         }
     }
