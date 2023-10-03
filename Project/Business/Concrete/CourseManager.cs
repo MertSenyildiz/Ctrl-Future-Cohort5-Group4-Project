@@ -20,13 +20,13 @@ namespace Project.Business.Concrete
             _fileSaver = fileHelper;
         }
 
-        public async void CreateCourse(CourseToAddDto course)
+        public async Task CreateCourse(CourseToAddDto course)
         {
             var courseToAdd = new Course
             {
-                ID=Guid.NewGuid(),
-                Title=course.Title,
-                //InstructorID
+                ID = Guid.NewGuid(),
+                Title = course.Title,
+                InstructorID = course.InstructorID,
                 Description=course.Description,
                 Category=course.Category,
                 EnrollmentCount=0,

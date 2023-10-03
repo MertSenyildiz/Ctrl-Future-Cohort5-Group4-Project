@@ -9,16 +9,16 @@
             this.path = path;
 
         }
-        public async Task<string> SaveFileAsync(IFormFile file)
+        public async Task<string> SaveFileAsync(IFormFile? file)
         {
             string filePath=Path.Combine(path,"Agilearn.png");
-            if(file.Length > 0 )
+            if(file is not null)
             {
                 filePath = Path.Combine(path, Guid.NewGuid().ToString() + Path.GetExtension(file.FileName));
                 using FileStream fileStream = new FileStream(filePath, FileMode.Create);
                 await file.CopyToAsync(fileStream);
             }
-            return filePath.Replace("wwwroot","~");
+            return filePath.Replace("wwwroot","");
         }
     }
 }

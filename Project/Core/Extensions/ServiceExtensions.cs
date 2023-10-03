@@ -22,6 +22,7 @@ namespace Project.Core.Extensions
                 services.AddSingleton<IUserService, UserManager>();
                 services.AddSingleton<IAuthService, AuthManager>();
                 services.AddSingleton<IEnrollmentService, EnrollmentManager>();
+                services.AddSingleton<ICourseService, CourseManagement>();
             }
             public static void InjectDbContextFactory(this IServiceCollection services, IConfiguration configuration)
             {
