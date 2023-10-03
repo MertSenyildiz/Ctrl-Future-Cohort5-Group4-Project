@@ -20,11 +20,11 @@ namespace Project.Controllers
         
         }
         [HttpPost]
-        public async Task<IActionResult> Create(CourseToAddDto course)
+        public async Task<IActionResult> CreateAsync(CourseToAddDto course)
         {
             var id = HttpContext.User.Claims("id")[0];
             course.InstructorID = Guid.Parse(id);
-            await _courseService.CreateCourse(course);
+            await _courseService.CreateCourseAsync(course);
             return RedirectToAction("Index");
         }
         public IActionResult Index()

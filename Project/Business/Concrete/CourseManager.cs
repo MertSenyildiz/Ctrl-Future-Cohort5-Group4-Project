@@ -8,19 +8,19 @@ using System.Collections.Generic;
 
 namespace Project.Business.Concrete
 {
-    public class CourseManagement : ICourseService
+    public class CourseManager : ICourseService
     {
         
         private readonly ICourseDal _courseDal;
         IFileHelper _fileSaver;
 
-        public CourseManagement(ICourseDal courseDal,IFileHelper fileHelper)
+        public CourseManager(ICourseDal courseDal,IFileHelper fileHelper)
         {
             _courseDal = courseDal;
             _fileSaver = fileHelper;
         }
 
-       public async void CreateCourse(CourseToAddDto course)
+       public async Task CreateCourseAsync(CourseToAddDto course)
         {
             var courseToAdd = new Course
             {

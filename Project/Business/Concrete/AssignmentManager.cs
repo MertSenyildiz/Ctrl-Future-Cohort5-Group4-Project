@@ -5,11 +5,11 @@ using Project.Models;
 
 namespace Project.Business.Concrete
 {
-    public class AssignmentManagement : IAssignmentService
+    public class AssignmentManager : IAssignmentService
     {
         private readonly IAssignmentDal _assignmentDal;
 
-        public AssignmentManagement(IAssignmentDal assignmentDal)
+        public AssignmentManager(IAssignmentDal assignmentDal)
         {
             _assignmentDal = assignmentDal;
         }
