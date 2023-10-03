@@ -55,5 +55,10 @@ namespace Project.Business.Concrete
         {
             return _enrollmentDal.Get(e => e.UserID == userID && e.CourseID == courseID);
         }
+
+        public List<Enrollment> GetByCourseId(Guid courseID)
+        {
+            return _enrollmentDal.GetAll(e => e.CourseID == courseID);
+        }
     }
 }

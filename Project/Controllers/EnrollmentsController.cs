@@ -22,13 +22,28 @@ namespace Project.Controllers
             _enrollmentService.Enroll(Guid.Parse(userId), Guid.Parse(courseId));
             return RedirectToAction("MyCourses","Courses");
         }
-        [Authorize(Roles = "Student,Admin,Instructor")]
+        [Authorize(Roles = "Student")]
         [HttpPost]
         public IActionResult Disenroll(string courseId)
         {
             var userId = HttpContext.User.Claims("id")[0];
             _enrollmentService.Disenroll(Guid.Parse(userId),Guid.Parse(courseId));
             return RedirectToAction("MyCourses", "Courses");
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult EnrollStudent(string userId,string courseId)
+        {
+            _enrollmentService.Enroll(Guid.Parse(userId), Guid.Parse(courseId));
+            return RedirectToAction(courseId,"Course");
+        }
+        [Authorize(Roles = "Admin,Instructor")]
+        [HttpPost]
+        public IActionResult DisenrollStudent(string userId, string courseId)
+        {
+            _enrollmentService.Disenroll(Guid.Parse(userId), Guid.Parse(courseId));
+            return RedirectToAction(courseId, "Course");
         }
     }
 }

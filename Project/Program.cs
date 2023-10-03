@@ -78,14 +78,22 @@ namespace Project
             app.UseAuthentication();
 
             //unauthorized Page redirection
-            //app.UseStatusCodePages(async ctx =>
-            //{
-            //    var response = ctx.HttpContext.Response;
+            app.UseStatusCodePages(async ctx =>
+            {
+                var response = ctx.HttpContext.Response;
 
-            //    if (response.StatusCode == (int)HttpStatusCode.Unauthorized ||
-            //            response.StatusCode == (int)HttpStatusCode.Forbidden)
-            //        response.Redirect("/");
-            //});
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized ||
+                        response.StatusCode == (int)HttpStatusCode.Forbidden)
+                {
+                    if (!ctx.HttpContext.User.Claims.Any())
+                    {
+                        response.Redirect($"/Auth/Login?returnUrl={ctx.HttpContext.Request.Path}");
+                    } 
+                    else
+                    response.Redirect("/");
+                }
+                    
+            });
 
             app.UseAuthorization();
 

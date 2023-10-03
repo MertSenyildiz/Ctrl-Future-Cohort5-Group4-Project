@@ -8,6 +8,7 @@ namespace Project.Business.Abstract
         void Disenroll(Guid userID,Guid courseID);
 
         Enrollment GetByUserAndCourse(Guid userID,Guid courseID);
+        List<Enrollment> GetByCourseId(Guid courseID);
 
     }
 }

@@ -52,6 +52,22 @@ namespace Project.Controllers
             return View(courses);
         }
 
+        [Route("/Course/{courseId}")]
+        public IActionResult IndexCourse(string courseId)
+        {
+            var course = _courseService.GetCourseById(Guid.Parse(courseId));
+            if (HttpContext.User.Claims("id").Any())
+            {
+                if (HttpContext.User.Claims(ClaimTypes.Role)[0] == "Admin" 
+                    || (HttpContext.User.Claims(ClaimTypes.Role)[0] == "Instructor" 
+                    && course.InstructorID== Guid.Parse(HttpContext.User.Claims("id")[0])))
+                {
+                    ViewData["Users"] =_enrollmentService.GetByCourseId(Guid.Parse(courseId));
+                }
+            }
+            return View(course);
+        }
+
         [Authorize]
         public IActionResult MyCourses()
         {

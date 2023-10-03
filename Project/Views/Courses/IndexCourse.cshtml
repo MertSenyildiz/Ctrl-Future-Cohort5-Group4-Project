@@ -1,0 +1,29 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model Course
+
+<div class="row">
+    <img src="@Model.ImageUrl" width="150" height="150" />
+    <p>@Model.Title</p>
+    <p>@Model.Description</p>
+</div>
+@if (ViewData["Users"] is not null)
+{
+    <div class="row">
+        @foreach(var enrollment in ViewData["Users"] as List<Enrollment>)
+         {
+            <div>
+                @enrollment.ID <br />
+                <span>
+                    <form method="post" asp-action="DisenrollStudent" asp-controller="Enrollments" asp-route-courseId="@Model.ID" asp-route-userId="@enrollment.UserID">
+                        <button type="submit" class="btn btn-sm btn-danger">Disenroll student</button>
+                    </form>
+                </span>
+            </div>
+         }
+    </div>
+}
+
