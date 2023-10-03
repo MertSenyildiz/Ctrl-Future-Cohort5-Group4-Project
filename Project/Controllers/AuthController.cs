@@ -48,7 +48,7 @@ namespace Project.Controllers
                         var token = _authService.CreateAccessToken(user);
                         AddToCookie("X-Access-Token", token.Token, token.Expiration);
                         AddToCookie("X-Refresh-Token", token.RefreshToken, DateTime.Now.AddDays(7));
-                        return Ok(token);
+                        return Redirect("/");
                     }
                 }
             }
@@ -73,6 +73,16 @@ namespace Project.Controllers
             }
             return Redirect("/");
            
+        }
+
+        public IActionResult Logout()
+        {
+            if (HttpContext.User.Identities.Any())
+            {
+                AddToCookie("X-Access-Token", "", DateTime.Now.AddDays(-1));
+                AddToCookie("X-Refresh-Token", "", DateTime.Now.AddDays(-1));
+            }
+            return Redirect("/");
         }
 
         public IActionResult Login()

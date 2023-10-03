@@ -12,7 +12,6 @@
           <form asp-action="Login" asp-controller="Auth" method="POST" class="form-signin" asp-route-returnUrl="@ViewData["returnUrl"]">
               <img src="~/Content/img/Agilearn.png" alt="Image" class="img-fluid my-spacing">
             <h1 class="h3 mb-3 font-weight-normal">Sign In To Your Account</h1>
-
             <span asp-validation-for="Email" class="text-danger"> </span>
             <label asp-for="Email" class="sr-only">Email address</label>
             <input asp-for="Email" class="form-control my-spacing" placeholder="Email address"  autofocus="">
