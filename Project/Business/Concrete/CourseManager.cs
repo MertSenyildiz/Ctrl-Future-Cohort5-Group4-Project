@@ -1,6 +1,7 @@
 ﻿using Project.Business.Abstract;
 using Project.Core.Helpers.FileHelpers;
 using Project.DataAccess.Abstract;
+using Project.Migrations;
 using Project.Models;
 using System;
 using System.Collections.Generic;
@@ -85,6 +86,26 @@ namespace Project.Business.Concrete
                 course.EnrollmentCount--;
                 UpdateCourse(course);
             }
+        }
+
+        public CourseWithAllDetails GetCourseWithDetail(Guid courseId)
+        {
+            return _courseDal.GetWithDetails(courseId);
+        }
+
+        public List<CourseWithAllDetails> GetAllCoursesWithDetail()
+        {
+            return _courseDal.GetAllWithDetails();
+        }
+
+        public List<CourseWithAllDetails> GetCoursesWithDetailsByUser(Guid userId)
+        {
+            return _courseDal.GetWithDetailsByUser(userId);
+        }
+
+        public List<CourseWithAllDetails> GetCoursesWithDetailsByInstructor(Guid instructorId)
+        {
+            return _courseDal.GetAllWithDetails().Where(c=>c.InstructorID==instructorId).ToList();
         }
     }
 }

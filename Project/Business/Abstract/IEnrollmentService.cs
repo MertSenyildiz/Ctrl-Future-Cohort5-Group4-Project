@@ -8,7 +8,11 @@ namespace Project.Business.Abstract
         void Disenroll(Guid userID,Guid courseID);
 
         Enrollment GetByUserAndCourse(Guid userID,Guid courseID);
+
+
+        [Obsolete("GetByCourseId is deprecated, please use GetWithDetailsByCourseId instead.")]
         List<Enrollment> GetByCourseId(Guid courseID);
+        List<EnrollmentWithAllDetails> GetWithDetailsByCourseId(Guid courseID);
 
     }
 }

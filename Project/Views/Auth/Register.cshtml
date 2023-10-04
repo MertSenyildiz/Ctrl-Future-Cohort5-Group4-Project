@@ -8,7 +8,7 @@
 <div class="container mx-6 col-sm-6 d-flex justify-content-center align-items-center vertical-center"
         data-new-gr-c-s-check-loaded="14.1129.0" data-gr-ext-installed="">
         <div class="row">
-            <form method="POST" asp-action="Register" class="form-signin">
+            <form method="POST" asp-action="Register" class="form-signin" asp-route-returnUrl="@ViewData["returnUrl"]">
                 <img src="~/Content/img/Agilearn.png" alt="Image" class="img-fluid my-spacing">
 
                 <h1 class="h3 mb-3 font-weight-normal ">Join AgiLearn!</h1>
@@ -30,7 +30,7 @@
                 
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Create an Account</button>
                 <br>
-                <div class="justify-text-center"><a class="link-secondary" asp-action="Login">Already have an account</a></div>
+                <div class="justify-text-center"><a class="link-secondary" asp-action="Login" asp-route-returnUrl="@ViewData["returnUrl"]">Already have an account</a></div>
             </form>
         </div>
     </div>
