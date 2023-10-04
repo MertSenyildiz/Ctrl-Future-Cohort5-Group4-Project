@@ -23,7 +23,10 @@ namespace Project.Business.Concrete
         {
             _userDal.Add(user);
         }
-
+        public List<User> GetAllUsers()
+        {
+            return _userDal.GetAll();
+        }
         public User GetById(Guid id)
         {
             var user = _userDal.Get(u=>u.ID == id);

@@ -25,6 +25,8 @@ namespace Project.Business.Abstract
         
         void DeleteUser(Guid userId);
 
+        public List<User> GetAllUsers();
+
         User GetById(Guid id);
 
         User GetByMail(string mail);

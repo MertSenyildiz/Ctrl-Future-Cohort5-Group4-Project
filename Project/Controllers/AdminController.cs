@@ -15,11 +15,12 @@ namespace Project.Controllers
         {
             _adminService = adminService;
         }
-        //[Authorize(Roles ="Student")]
+        [Authorize(Roles ="Admin")]
         public ActionResult Create() {
             
             return View();
         }
+        [Authorize(Roles = "Admin")]
         public IActionResult Index( )
         {
             var courses =  _adminService.GetAllCourses( ); /* Bringing all the table from database and drop into your table */
@@ -109,6 +110,12 @@ namespace Project.Controllers
             _adminService.DeleteCourse(id);
             return RedirectToAction("Index");
         }
-    
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult UserManager()
+        {
+            var users = _adminService.GetAllUsers( );
+            return View(users);
+        }
     }
 }
