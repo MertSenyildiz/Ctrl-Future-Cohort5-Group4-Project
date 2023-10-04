@@ -13,7 +13,7 @@
 @if (ViewData["Users"] is not null)
 {
     <div class="row">
-        @foreach(var enrollment in ViewData["Users"] as List<Enrollment>)
+        @foreach(var enrollment in ViewData["Users"] as List<EnrollmentWithAllDetails>)
          {
             <div>
                 @enrollment.ID <br />
