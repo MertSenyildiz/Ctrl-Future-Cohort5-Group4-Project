@@ -1,5 +1,7 @@
+@using System.Security.Claims
 @{
     var user = Context.User;
+    var path = Context.Request.Path.ToString().ToLower( );
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -23,23 +25,11 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a asp-controller="Courses" asp-action="Index" class="nav-link">Explore Courses <span class="sr-only">(current)</span></a>
+                    <li class="nav-item active">
+                        <a class="nav-link" asp-controller = "Courses" asp-action="Index">Explore Courses <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Contact Us</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Categories
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Business</a>
-                            <a class="dropdown-item" href="#">Coding</a>
-                            <a class="dropdown-item" href="#">Leadership</a>
-                            <a class="dropdown-item" href="#">Economy</a>
-                            <a class="dropdown-item" href="#">Data Science</a>
-                        </div>
                     </li>
                 </ul>
                 <form class="form-inline mx-auto d-flex">
@@ -48,14 +38,30 @@
                 </form>
                 <ul class="navbar-nav ml-auto">
 
-                    @if(user.HasClaim(a=>true)){
-                        <li class="nav-item">
-                        <span class="nav-link">Hoşgeldin @user.Claims("username")[0]</span>
-                        </li>
-                        <li class="nav-item active">
-                        <a class="nav-link" asp-controller="Auth" asp-action="Logout">Logout <span class="sr-only">(current)</span></a>
-                        </li>
-                    }
+                    @if (user.HasClaim(a => a.Type == ClaimTypes.Role))
+  {
+      <li class="nav-item">
+                     <span class="nav-link">Hoşgeldin @user.Claims.FirstOrDefault(a => a.Type == "username")?.Value</span>
+      </li>
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              My Account
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @if (user.Claims( ClaimTypes.Role)[0] == "Admin")
+              {
+                  <a class="dropdown-item" asp-controller = "Admin" asp-action="Index">Admin Panel</a>
+              }
+                                @if (user.Claims(ClaimTypes.Role)[0] == "Instructor")
+              {
+                  <a class="dropdown-item" href="#">Instructor Panel</a>
+              }
+
+                                <a class="dropdown-item" asp-controller = "Courses" asp-action = "MyCourses" >My Courses</a>
+              <a class="dropdown-item" asp-controller="Auth" asp-action="Logout">Logout</a>
+          </div>
+      </li>
+    }
                     else{
                         <li class="nav-item active">
                         <a asp-controller="Auth" asp-action="Login" class="nav-link">Sign In<span class="sr-only">(current)</span></a>
@@ -71,7 +77,12 @@
     <div class="row">
                  <div class="col-md-2 text-white">
                         <ul class= "nav nav-pills flex-column mb-auto">
-                         <li class= "nav-item cursor-pointer"><a class = "nav-link active"  asp-controller="Admin" asp-action="UserManager">UserManager</a></li>
+                         <li class= "nav-item cursor-pointer"><a class = "nav-link @(path == "/admin" ? "active" : "")"  asp-controller="Admin" asp-action="Index">Admin Dashboard</a></li>
+                          
+                         <li class= "nav-item cursor-pointer"><a class = "nav-link @(path == "/admin/usermanager" ? "active" : "")"  asp-controller="Admin" asp-action="UserManager">UserManager</a></li>
+                        
+                        <li class= "nav-item cursor-pointer"><a class = "nav-link @(path == "/admin/create" ? "active" : "")"  asp-controller="Admin" asp-action="Create">Create Course</a></li>
+
                         </ul>
                 </div>
                 <div class= "col-md-10 px-4" style= "min-height:100vh">
