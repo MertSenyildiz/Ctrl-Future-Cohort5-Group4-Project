@@ -11,6 +11,7 @@ namespace Project.Business.Abstract
 
         User GetByMail(string mail);
 
+        List<UserToShowDto> GetAll();
         User GetByRefreshToken(string refreshToken);
     }
 }

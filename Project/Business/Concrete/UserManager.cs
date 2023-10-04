@@ -5,7 +5,7 @@ using Project.Models;
 
 namespace Project.Business.Concrete
 {
-    public class UserManager:IUserService
+    public class UserManager: IUserService
     {
         IUserDal _userDal;
         public UserManager(IUserDal userDal) 
@@ -16,6 +16,11 @@ namespace Project.Business.Concrete
         public void Add(User user)
         {
             _userDal.Add(user);
+        }
+
+        public List<UserToShowDto> GetAll()
+        {
+            return _userDal.GetAll().Select(u=>new UserToShowDto { ID=u.ID,Email=u.Email,Username=u.Username,Role=u.Role}).ToList();
         }
 
         public User GetById(Guid id)

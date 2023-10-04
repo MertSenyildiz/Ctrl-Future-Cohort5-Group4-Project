@@ -33,7 +33,8 @@ namespace Project.Controllers
                 }
                 return Redirect("/");
             }
-            return Login();
+            ViewData["returnUrl"]=returnUrl;
+            return Login(null);
         }
         [HttpPost]
         public IActionResult Register(UserRegisterDto registerDto)
@@ -85,10 +86,25 @@ namespace Project.Controllers
             return Redirect("/");
         }
 
-        public IActionResult Login()
+        public IActionResult Login(string? returnUrl)
         {
-            var address=new Uri(Request.Headers["Referer"]);
-            ViewData["returnUrl"]=address.PathAndQuery;
+            if (ViewData["returnUrl"]==null)
+            {
+                if (returnUrl is not null)
+                {
+                    ViewData["returnUrl"] = returnUrl;
+                }
+                else if (Request.Headers["Referer"].Any())
+                {
+                    var address = new Uri(Request.Headers["Referer"]);
+                    if (address.PathAndQuery != "/Auth/Login")
+                        ViewData["returnUrl"] = address.PathAndQuery;
+                }
+                else
+                {
+                    ViewData["returnUrl"] = "/";
+                }
+            }
             return View();
         }
 

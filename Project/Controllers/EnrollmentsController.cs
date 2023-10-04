@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Project.Business.Abstract;
 using Project.Core.Extensions;
@@ -12,17 +13,37 @@ namespace Project.Controllers
         {
             _enrollmentService = enrollmentService;
         }
-        public IActionResult Index()
+
+        [Authorize(Roles ="Student")]
+        [HttpPost]
+        public IActionResult Enroll(string courseId)
         {
-            return View();
+            var userId = HttpContext.User.Claims("id")[0];
+            _enrollmentService.Enroll(Guid.Parse(userId), Guid.Parse(courseId));
+            return RedirectToAction("MyCourses","Courses");
+        }
+        [Authorize(Roles = "Student")]
+        [HttpPost]
+        public IActionResult Disenroll(string courseId)
+        {
+            var userId = HttpContext.User.Claims("id")[0];
+            _enrollmentService.Disenroll(Guid.Parse(userId),Guid.Parse(courseId));
+            return RedirectToAction("MyCourses", "Courses");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult Enroll()
+        public IActionResult EnrollStudent(string userId,string courseId)
         {
-            var courseID = Guid.Parse(Request.Form["courseID"]);
-            _enrollmentService.Enroll(Guid.Parse(HttpContext.User.Claims("id")[0]), courseID);
-            return Ok();
+            _enrollmentService.Enroll(Guid.Parse(userId), Guid.Parse(courseId));
+            return RedirectToAction(courseId,"Course");
+        }
+        [Authorize(Roles = "Admin,Instructor")]
+        [HttpPost]
+        public IActionResult DisenrollStudent(string userId, string courseId)
+        {
+            _enrollmentService.Disenroll(Guid.Parse(userId), Guid.Parse(courseId));
+            return RedirectToAction(courseId, "Course");
         }
     }
 }

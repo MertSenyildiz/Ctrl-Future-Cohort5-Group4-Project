@@ -4,13 +4,15 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Project.Business.Abstract;
 using Project.Core.Extensions;
-using Project.Core.Helpers.File;
+using Project.Core.Helpers.FileHelpers;
+using Project.Core.Security.Attributes;
 using Project.Core.Security.Hashing;
 using Project.Core.Security.JWT;
 using Project.DataAccess.Abstract;
 using Project.Models;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 
 namespace Project.Controllers
 {
@@ -29,6 +31,7 @@ namespace Project.Controllers
             _fileHelper = fileHelper;
             _userService= userService;
         }
+        
         public IActionResult Index()
         {
             return View();
@@ -36,7 +39,7 @@ namespace Project.Controllers
         [Authorize(Roles ="Student,Admin")]
         public IActionResult Privacy()
         {
-           return View();
+            return View();
         }
 
         [HttpPost("login")]

@@ -1,5 +1,5 @@
 ﻿using Project.Business.Abstract;
-using Project.Core.Helpers.File;
+using Project.Core.Helpers.FileHelpers;
 using Project.DataAccess.Abstract;
 using Project.Models;
 using System;
@@ -8,24 +8,24 @@ using System.Collections.Generic;
 
 namespace Project.Business.Concrete
 {
-    public class CourseManagement : ICourseService
+    public class CourseManager : ICourseService
     {
         
         private readonly ICourseDal _courseDal;
         IFileHelper _fileSaver;
 
-        public CourseManagement(ICourseDal courseDal,IFileHelper fileHelper)
+        public CourseManager(ICourseDal courseDal,IFileHelper fileHelper)
         {
             _courseDal = courseDal;
             _fileSaver = fileHelper;
         }
 
-        public async Task CreateCourse(CourseToAddDto course)
+       public async Task CreateCourseAsync(CourseToAddDto course)
         {
             var courseToAdd = new Course
             {
-                ID = Guid.NewGuid(),
-                Title = course.Title,
+                ID=Guid.NewGuid(),
+                Title=course.Title,
                 InstructorID = course.InstructorID,
                 Description=course.Description,
                 Category=course.Category,
@@ -43,6 +43,7 @@ namespace Project.Business.Concrete
         public void DeleteCourse(Guid courseId)
         {
             var course = _courseDal.Get(x => x.ID == courseId);
+            _fileSaver.DeleteFile(course.ImageUrl);
             _courseDal.Delete(course);
         }
 
@@ -59,6 +60,31 @@ namespace Project.Business.Concrete
         public List<Course> GetCoursesByInstructor(Guid instructorId)
         {
             return _courseDal.GetAll(x => x.ID == instructorId);
+        }
+
+        public List<Course> GetCoursesByUser(Guid userId)
+        {
+            return _courseDal.GetByUser(userId);
+        }
+
+        public void IncrementEnrollmentCout(Guid courseId)
+        {
+            var course = _courseDal.Get(c=>c.ID==courseId);
+            if(course is not null)
+            {
+                course.EnrollmentCount++;
+                UpdateCourse(course);
+            }
+        }
+
+        public void DecrementEnrollmentCout(Guid courseId)
+        {
+            var course = _courseDal.Get(c => c.ID == courseId);
+            if (course is not null)
+            {
+                course.EnrollmentCount--;
+                UpdateCourse(course);
+            }
         }
     }
 }

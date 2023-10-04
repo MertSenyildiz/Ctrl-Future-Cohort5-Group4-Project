@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Project.Business.Abstract;
 using Project.Business.Concrete;
-using Project.Core.Helpers.File;
+using Project.Core.Helpers.FileHelpers;
 using Project.Core.Security.JWT;
 using Project.DataAccess.Abstract;
 using Project.DataAccess.Concrete;
@@ -22,8 +22,13 @@ namespace Project.Core.Extensions
                 services.AddSingleton<IUserService, UserManager>();
                 services.AddSingleton<IAuthService, AuthManager>();
                 services.AddSingleton<IEnrollmentService, EnrollmentManager>();
-                services.AddSingleton<ICourseService, CourseManagement>();
+
+                services.AddSingleton<ICourseService, CourseManager>();
+                services.AddSingleton<IAssignmentService, AssignmentManager>();
+
+                services.AddSingleton<IAdminService, AdministrationManager>();
             }
+
             public static void InjectDbContextFactory(this IServiceCollection services, IConfiguration configuration)
             {
                 services.AddDbContextFactory<ProjectDbContext>(

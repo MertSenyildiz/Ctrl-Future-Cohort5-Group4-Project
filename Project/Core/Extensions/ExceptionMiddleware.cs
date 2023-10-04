@@ -18,7 +18,7 @@ namespace Project.Core.Extensions
             catch (Exception ex)
             {
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                context.Response.Redirect("/");
+                context.Response.Redirect("/Home/Error");
             }
         }
     }
