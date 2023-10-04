@@ -51,7 +51,6 @@ namespace Project.Controllers
             }
             return View(courses);
         }
-
         [Route("/Course/{courseId}")]
         public IActionResult IndexCourse(string courseId)
         {

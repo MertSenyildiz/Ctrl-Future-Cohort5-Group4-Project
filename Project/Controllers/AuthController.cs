@@ -90,16 +90,15 @@ namespace Project.Controllers
         {
             if (ViewData["returnUrl"]==null)
             {
-                
-                if (Request.Headers["Referer"].Any())
+                if (returnUrl is not null)
+                {
+                    ViewData["returnUrl"] = returnUrl;
+                }
+                else if (Request.Headers["Referer"].Any())
                 {
                     var address = new Uri(Request.Headers["Referer"]);
                     if (address.PathAndQuery != "/Auth/Login")
                         ViewData["returnUrl"] = address.PathAndQuery;
-                }
-                else if (returnUrl is not null)
-                {
-                    ViewData["returnUrl"] = returnUrl;
                 }
                 else
                 {
