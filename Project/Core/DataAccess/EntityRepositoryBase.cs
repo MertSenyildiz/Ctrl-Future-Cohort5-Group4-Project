@@ -45,7 +45,7 @@ namespace Project.Core.DataAccess
             using var context = _dbContextFactory.CreateDbContext();
             var entityUpdated = context.Entry(entity);
             entityUpdated.State = EntityState.Modified;
-            context.SaveChanges();
+            context.SaveChanges();    
         }
     }
 }
