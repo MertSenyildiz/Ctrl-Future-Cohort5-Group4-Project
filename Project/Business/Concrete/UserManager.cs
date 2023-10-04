@@ -18,6 +18,11 @@ namespace Project.Business.Concrete
             _userDal.Add(user);
         }
 
+        public List<UserToShowDto> GetAll()
+        {
+            return _userDal.GetAll().Select(u=>new UserToShowDto { ID=u.ID,Email=u.Email,Username=u.Username,Role=u.Role}).ToList();
+        }
+
         public User GetById(Guid id)
         {
             var user = _userDal.Get(u=>u.ID == id);

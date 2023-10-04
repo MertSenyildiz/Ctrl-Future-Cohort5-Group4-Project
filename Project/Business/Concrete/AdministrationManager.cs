@@ -9,23 +9,25 @@ namespace Project.Business.Concrete
     public class AdministrationManager : IAdminService
     {
         private readonly IUserDal _userDal;
+        IUserService _userService;
         private readonly ICourseDal _courseDal;
         IFileHelper _fileSaver;
         
-        public AdministrationManager(IUserDal userDal, ICourseDal courseDal, IFileHelper fileSaver) 
+        public AdministrationManager(IUserDal userDal, ICourseDal courseDal,IUserService userService,IFileHelper fileSaver) 
         {
             _userDal = userDal;
             _courseDal = courseDal;
             _fileSaver = fileSaver;
+            _userService=userService;
         }
 
         public void Add(User user)
         {
             _userDal.Add(user);
         }
-        public List<User> GetAllUsers()
+        public List<UserToShowDto> GetAllUsers()
         {
-            return _userDal.GetAll();
+            return _userService.GetAll();
         }
         public User GetById(Guid id)
         {

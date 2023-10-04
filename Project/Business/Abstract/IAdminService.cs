@@ -25,7 +25,7 @@ namespace Project.Business.Abstract
         
         void DeleteUser(Guid userId);
 
-        public List<User> GetAllUsers();
+        public List<UserToShowDto> GetAllUsers();
 
         User GetById(Guid id);
 
