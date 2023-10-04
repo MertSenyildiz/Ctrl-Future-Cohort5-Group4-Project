@@ -5,7 +5,7 @@ using Project.Models;
 
 namespace Project.Business.Concrete
 {
-    public class UserManager:IUserService
+    public class UserManager: IUserService
     {
         IUserDal _userDal;
         public UserManager(IUserDal userDal) 

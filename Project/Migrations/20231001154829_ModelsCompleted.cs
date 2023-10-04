@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Project.Data.Enum;
 
 #nullable disable
 
@@ -34,8 +35,8 @@ namespace Project.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     InstructorID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Category = table.Column<CourseCategory>(type: "nvarchar(max)", nullable: false),
+                    CategoryName = table.Column<CourseCategory>(type: "nvarchar(max)", nullable: false),
                     EnrollmentCount = table.Column<int>(type: "int", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
