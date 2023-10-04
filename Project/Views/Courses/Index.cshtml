@@ -20,9 +20,12 @@
             <div class="btn-group">
             <a type="btn btn-success" asp-controller="Admin" asp-action="Detail" asp-route-id="@item.ID" 
                 class="btn btn-sm btn-outline-secondary">View</a>
+            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
             <a asp-controller="Admin" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-outline-secondary">Edit</a>
             
             <a asp-controller="Admin" asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-outline-secondary">Delete</a> 
+            }
             </div>
             <small class="text-muted">@item.Category</small>
         </div>
