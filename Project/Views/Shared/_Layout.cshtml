@@ -12,12 +12,13 @@
     <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="/Project.styles.css" asp-append-version="true" />
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" asp-controller="Home" asp-action="Index"><img width="120" height="45" class="d-inline-block align-top" src="~/Content/img/Agilearn.png"></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -42,7 +43,7 @@
                             <span class="nav-link">Hoşgeldin @user.Claims.FirstOrDefault(a => a.Type == "username")?.Value</span>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 My Account
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -113,7 +114,7 @@
             </div>
         </div>
     </footer>
-    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    
     <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

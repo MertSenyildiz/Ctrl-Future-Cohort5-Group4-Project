@@ -16,7 +16,7 @@ namespace Project.Controllers
             _courseService = courseService;
             _enrollmentService = enrollmentService;
         }
-        [Authorize(Roles ="Student")]
+        [Authorize(Roles ="Instructor")]
         public ActionResult Create() {
             
             return View();
@@ -36,9 +36,20 @@ namespace Project.Controllers
             _courseService.DeleteCourse(Guid.Parse(courseId));
             return RedirectToAction("Index");
         }
-        public IActionResult Index()
+        public IActionResult Index(string? nameFilter, int? categoryFilter)
         {
             var courses = _courseService.GetAllCoursesWithDetail();
+            if(nameFilter is not null)
+            {
+                ViewData["nameFilter"] = nameFilter;
+                nameFilter = nameFilter.Replace(" ","");
+                courses =courses.Where(c=>c.Title.ToLower().Contains(nameFilter.ToLower())).ToList();
+            }
+            if(categoryFilter is not null)
+            {
+                ViewData["categoryFilter"] = categoryFilter;
+                courses = courses.Where(c=>(int)c.Category==categoryFilter ).ToList();
+            }
             if(HttpContext.User.Claims("id").Any())
             {
                 if (HttpContext.User.Claims(ClaimTypes.Role)[0]=="Student")

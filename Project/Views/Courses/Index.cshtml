@@ -3,49 +3,73 @@
 *@
 @{
     ViewData["Title"]="Courses";
+    var category = (int?)ViewData["categoryFilter"] ?? -1;
 }
 @model IEnumerable<CourseWithAllDetails>
 
 <div class="album py-5 bg-light">
-        <div class="container">
-
-          <div class="row">
-                @foreach(var item in Model)
-                {
+    <div class="container">
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item @(category==1?"active":"")"><a asp-action="Index" asp-route-nameFilter="@(ViewData["nameFilter"]??"")" asp-route-categoryFilter="1">Development</a></li>
+            <li class="list-group-item @(category==2?"active":"")"><a asp-action="Index" asp-route-nameFilter="@(ViewData["nameFilter"]??"")" asp-route-categoryFilter="2">Deneme</a></li>
+            <li class="list-group-item @(category==3?"active":"")"><a asp-action="Index" asp-route-nameFilter="@(ViewData["nameFilter"]??"")" asp-route-categoryFilter="3">Deneme 3</a></li>
+        </ul>
+            <input type="search" placeholder="Search" aria-label="Search" id="nameFilter">
+            <a href="/Courses" id="search" class="btn btn-outline-success my-2 my-sm-0" >Search</a>
+        <div class="row">
+            @foreach (var item in Model)
+            {
                 <div class="col-md-4">
-                <div class="card mb-4 box-shadow">
-                    <img class="card-img-top" src ="@item.ImageUrl" width="100%" height="225" alt="Card image cap">
-                    <div class="card-body">
-                    <p class="card-text">@item.Title</p>
-                     <p class="card-text">@item.Description</p>
-                     <p class="card-text">@item.EnrollmentCount People Take This Course</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                        <a type="btn btn-success" asp-controller="Course" asp-action="@item.ID" 
-                            class="btn btn-sm btn-outline-info">View</a>
-                        <a asp-controller="Course" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-outline-secondary">Edit</a>
-                        @if(Context.User.HasClaim(a=>true)){
-                            var role=Context.User.Claims(ClaimTypes.Role)[0];
-                            if(role=="Student"){
-                                <form asp-controller="Enrollments" asp-action="Enroll" method="POST" asp-route-courseId="@item.ID">
-                                    <button type="submit" class="btn btn-sm btn-success">Enroll</button>
-                                </form>
-                            }
-                            else if(role=="Admin"){
-                                <form asp-controller="Courses" asp-action="DeleteCourse" method="POST" asp-route-courseId="@item.ID">
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                </form>
-                            }
-                        }
+                    <div class="card mb-4 box-shadow">
+                        <img class="card-img-top" src="@item.ImageUrl" width="100%" height="225" alt="Card image cap">
+                        <div class="card-body">
+                            <p class="card-text">@item.Title</p>
+                            <p class="card-text">@item.Description</p>
+                            <p class="card-text">@item.EnrollmentCount People Take This Course</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a type="btn btn-success" asp-controller="Course" asp-action="@item.ID"
+                                       class="btn btn-sm btn-outline-info">View</a>
+                                    <a asp-controller="Course" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                    @if (Context.User.HasClaim(a => true))
+                                    {
+                                        var role = Context.User.Claims(ClaimTypes.Role)[0];
+                                        if (role == "Student")
+                                        {
+                                            <form asp-controller="Enrollments" asp-action="Enroll" method="POST" asp-route-courseId="@item.ID">
+                                                <button type="submit" class="btn btn-sm btn-success">Enroll</button>
+                                            </form>
+                                        }
+                                        else if (role == "Admin")
+                                        {
+                                            <form asp-controller="Courses" asp-action="DeleteCourse" method="POST" asp-route-courseId="@item.ID">
+                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                            </form>
+                                        }
+                                    }
+                                </div>
+                                <small class="text-muted">@item.Category</small>
+                            </div>
                         </div>
-                        <small class="text-muted">@item.Category</small>
-                    </div>
                     </div>
                 </div>
-                </div>
-                }
-         
-          </div>
+            }
+
         </div>
+    </div>
       </div>
+<script>
+    $("#search").on("click",
+        function () {
+            const query = (new URL(document.location)).searchParams;
+            const params = new URLSearchParams({
+                nameFilter:$("#nameFilter").val()
+            });
+            if (query.has("categoryFilter")) {
+                params.append("categoryFilter", query.get("categoryFilter"))
+            }
+            const href = $("#search").attr("href") + "?" + params.toString();
+            $("#search").attr("href", href)
+        });
+</script>
 
