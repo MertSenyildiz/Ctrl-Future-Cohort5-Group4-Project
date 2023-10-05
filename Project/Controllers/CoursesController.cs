@@ -71,6 +71,7 @@ namespace Project.Controllers
                     ViewData["Users"] =_enrollmentService.GetWithDetailsByCourseId(Guid.Parse(courseId));
                 }
             }
+            ViewData["Assignments"] = _enrollmentService.GetWithDetailsByCourseId(Guid.Parse(courseId));
             return View(course);
         }
 
