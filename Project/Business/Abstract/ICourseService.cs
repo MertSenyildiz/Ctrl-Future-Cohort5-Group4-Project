@@ -14,6 +14,7 @@ namespace Project.Business.Abstract
         [Obsolete("GetAllCourses is deprecated, please use GetAllCoursesWithDetail instead.")]
         List<Course> GetAllCourses();
         List<CourseWithAllDetails> GetAllCoursesWithDetail();
+        List<CourseWithAllDetails> GetAllCoursesWithDetailByFilters(string? nameFilter,int? categoryFilter);
 
 
 
@@ -31,7 +32,12 @@ namespace Project.Business.Abstract
         void IncrementEnrollmentCout(Guid courseId);
         void DecrementEnrollmentCout(Guid courseId);
         Task CreateCourseAsync(CourseToAddDto course);
-        void UpdateCourse(Course course);
         void DeleteCourse(Guid courseId);
+
+
+        [Obsolete("UpdateCourse is deprecated, please use UpdateCourseAsync instead.")]
+        void UpdateCourse(Course course);
+        Task UpdateCourseAsync(CourseToUpdateDto course);
+        
     }
 }

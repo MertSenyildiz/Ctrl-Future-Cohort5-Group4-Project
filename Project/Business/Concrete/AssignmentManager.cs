@@ -21,13 +21,29 @@ namespace Project.Business.Concrete
 
         public void UpdateAssignment(Assignment assignment)
         {
-            _assignmentDal.Update(assignment);
+            var assignmentToUpdate=_assignmentDal.Get(a=>a.ID==assignment.ID);
+            if(assignmentToUpdate!=null)
+            {
+                assignmentToUpdate.Title = assignment.Title;
+                assignmentToUpdate.Description = assignment.Description;
+                assignmentToUpdate.DueDate= assignment.DueDate;
+                _assignmentDal.Update(assignmentToUpdate);
+            }
+            else
+            {
+                throw new Exception("No course was found to update");
+            }
+            
         }
 
         public void DeleteAssignment(Guid assignmentId)
         {
             var assigment = _assignmentDal.Get(x => x.ID == assignmentId);
-            _assignmentDal.Delete(assigment);
+            if(assigment!=null)
+            {
+                _assignmentDal.Delete(assigment);
+            }
+            
         }
 
         public Assignment GetAssignmentById(Guid assignmentId)
@@ -44,6 +60,21 @@ namespace Project.Business.Concrete
         public List<Assignment> GetAssignmentsByCourse(Guid courseId)
         {
             return _assignmentDal.GetAll(x => x.ID == courseId);
+        }
+
+        public AssignmentWithAllDetails GetAssignmentWithDetails(Guid assignmentId)
+        {
+            return _assignmentDal.GetWithDetails(assignmentId);
+        }
+
+        public List<AssignmentWithAllDetails> GetAllAssignmentsWithDetails()
+        {
+            return _assignmentDal.GetAllWithDetails();
+        }
+
+        public List<AssignmentWithAllDetails> GetAllAssignmentsWithDetailsByCourse(Guid courseId)
+        {
+            return _assignmentDal.GetWithDetailsByCourse(courseId);
         }
     }
 }

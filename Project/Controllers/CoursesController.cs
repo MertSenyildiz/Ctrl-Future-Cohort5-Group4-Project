@@ -38,17 +38,14 @@ namespace Project.Controllers
         }
         public IActionResult Index(string? nameFilter, int? categoryFilter)
         {
-            var courses = _courseService.GetAllCoursesWithDetail();
+            var courses = _courseService.GetAllCoursesWithDetailByFilters(nameFilter,categoryFilter);
             if(nameFilter is not null)
             {
                 ViewData["nameFilter"] = nameFilter;
-                nameFilter = nameFilter.Replace(" ","");
-                courses =courses.Where(c=>c.Title.ToLower().Contains(nameFilter.ToLower())).ToList();
             }
             if(categoryFilter is not null)
             {
                 ViewData["categoryFilter"] = categoryFilter;
-                courses = courses.Where(c=>(int)c.Category==categoryFilter ).ToList();
             }
             if(HttpContext.User.Claims("id").Any())
             {
