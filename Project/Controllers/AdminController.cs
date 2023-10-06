@@ -117,5 +117,92 @@ namespace Project.Controllers
             var users = _adminService.GetAllUsers( );
             return View(users);
         }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UserEdit(Guid id)
+        {
+            var user = _adminService.GetById(id);
+            if(user == null) return View("Error");
+            var userDTO = new UserToShowDto
+            {
+                Username = user.Username,
+                Email = user.Email,
+                Role = user.Role,
+            };
+            return View(userDTO);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UserEdit(Guid id, UserToShowDto userDTO)
+        {
+            if(!ModelState.IsValid)
+            {
+                ModelState.AddModelError("","Failed to edit user");
+                return RedirectToAction("Index");
+            }
+            var _user = _adminService.GetById(id);
+            if(_user != null)
+            {
+                //var photoResult = await _photoService.AddPhotoAsync(clubVM.Image);
+                var editedUser = new User
+                {
+                    ID = _user.ID,
+                    Username = userDTO.Username,
+                    Email = userDTO.Email,
+                    PasswordSalt = _user.PasswordSalt,
+                    PasswordHash = _user.PasswordHash,
+                    Role = userDTO.Role,
+                    RefreshToken = _user.RefreshToken, 
+                    /* courseDto image ile Course image data type farklı */
+                };
+                _adminService.Update(editedUser);
+                return  RedirectToAction("Index");
+            }
+            else    
+                return RedirectToAction("Index");
+        }
+
+        
+        public async Task<IActionResult> UserDelete(Guid id)
+        {
+            var user = _adminService.GetById(id);
+            if(user == null) return View("Error");
+            else
+            {   
+                var _user = new UserToShowDto
+                {
+                    ID = user.ID,
+                    Username = user.Username,
+                    Email = user.Email,
+                    Role = user.Role,
+                };
+                
+                return View(_user);
+            }
+        }
+
+        [HttpPost, ActionName("DeleteUser")]
+        public async Task<IActionResult> DeleteUser(Guid id)
+        {
+              var userDetails = _adminService.GetById(id);
+            if(userDetails == null) return View("Error");
+
+            _adminService.DeleteUser(id);
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> UserDetail(Guid id)
+        {
+            var user = _adminService.GetById(id);
+            if(user == null) return View("Error");
+            var userDTO = new UserToShowDto
+            {
+                Username = user.Username,
+                Email = user.Email,
+                Role = user.Role,
+            };
+            return View(userDTO);
+        }
+
     }
 }
