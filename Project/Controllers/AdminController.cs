@@ -191,6 +191,7 @@ namespace Project.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
         public async Task<IActionResult> UserDetail(Guid id)
         {
             var user = _adminService.GetById(id);
