@@ -22,11 +22,11 @@
         <p class="card-text">@item.Email</p>
         <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
-            <a type="btn btn-success" asp-controller="Admin" asp-action="Detail" asp-route-id="@item.ID" 
+            <a type="btn btn-success" asp-controller="Admin" asp-action="UserDetail" asp-route-id="@item.ID" 
                 class="btn btn-sm btn-outline-secondary">View</a>
-            <a asp-controller="Admin" asp-action="EditUser" asp-route-id="@item.ID" class="btn btn-sm btn-outline-secondary">Edit</a>
+            <a asp-controller="Admin" asp-action="UserEdit" asp-route-id="@item.ID" class="btn btn-sm btn-outline-secondary">Edit</a>
             
-            <a asp-controller="Admin" asp-action="DeleteUser" asp-route-id="@item.ID" class="btn btn-sm btn-outline-secondary">Delete</a> 
+            <a asp-controller="Admin" asp-action="UserDelete" asp-route-id="@item.ID" class="btn btn-sm btn-outline-secondary">Delete</a> 
             </div>
             <small class="text-muted">@item.Role</small>
         </div>
