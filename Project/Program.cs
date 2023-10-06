@@ -90,7 +90,10 @@ namespace Project
                         response.Redirect($"/Auth/Login?returnUrl={ctx.HttpContext.Request.Path}");
                     } 
                     else
-                    response.Redirect("/");
+                    response.Redirect("/Home/UnauthorizedPage");
+                }
+                if(response.StatusCode== (int)HttpStatusCode.NotFound) {
+                    response.Redirect("/Home/PageNotFound");
                 }
                     
             });

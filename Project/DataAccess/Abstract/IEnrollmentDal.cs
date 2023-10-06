@@ -5,5 +5,6 @@ namespace Project.DataAccess.Abstract
 {
     public interface IEnrollmentDal : IEntityRepository<Enrollment>
     {
+        List<EnrollmentWithAllDetails> GetAllWithDetails();
     }
 }

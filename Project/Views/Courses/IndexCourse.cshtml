@@ -2,28 +2,221 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    var categories = Enum.GetValues(typeof(CourseCategory));
+    var userAuth = Context.User.Identity.IsAuthenticated;
+    var userRole = userAuth ? Context.User.Claims(ClaimTypes.Role)[0] : null;
+    Guid userId= userAuth ? Guid.Parse(Context.User.Claims("id")[0]) : Guid.Empty;
 }
-@model Course
+@model CourseWithAllDetails
 
-<div class="row">
-    <img src="@Model.ImageUrl" width="150" height="150" />
-    <p>@Model.Title</p>
-    <p>@Model.Description</p>
-</div>
-@if (ViewData["Users"] is not null)
-{
-    <div class="row">
-        @foreach(var enrollment in ViewData["Users"] as List<Enrollment>)
-         {
-            <div>
-                @enrollment.ID <br />
-                <span>
-                    <form method="post" asp-action="DisenrollStudent" asp-controller="Enrollments" asp-route-courseId="@Model.ID" asp-route-userId="@enrollment.UserID">
-                        <button type="submit" class="btn btn-sm btn-danger">Disenroll student</button>
-                    </form>
-                </span>
+<style>
+    .myclass {
+        width: 100%;
+        height: 250px;
+        object-fit: fill;
+    }
+    .item-bage-owner {
+        position: relative;
+        display: inline-block;
+    }
+
+    .notify-badge {
+        position: absolute;
+        left: 15px;
+        top: 15px;
+        text-align: center;
+    }
+</style>
+    <header class="site-header d-flex flex-column justify-content-center align-items-center">
+        <div class="container">
+            <div class="row justify-content-center align-items-center">
+
+                <div class="col-lg-5 col-12 mb-5">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a asp-controller="Courses" asp-action="Index">Courses</a></li>
+
+                            <li class="breadcrumb-item active"aria-current="page"><a class="active" style="color:white" asp-controller="Courses" asp-action="Index" asp-route-categoryFilter="@((int)Model.Category)">@(Model.Category)</a></li>
+                        </ol>
+                    </nav>
+
+                    <h2 class="text-white">@Model.Title</h2>
+                    <a asp-controller="Courses" asp-action="Index"><i>by @Model.Username</i></a>
+                    <div class="d-flex align-items-center mt-5">
+                        <a href="#topics-detail" class="btn custom-btn custom-border-btn smoothscroll me-4">Read More</a>
+
+                        <ul class="list-inline">
+                            @if (userAuth)
+                            {
+                                if (userRole == "Admin" || (userRole == "Instructor" && userId == Model.InstructorID))
+                                {
+                                    <li class="list-inline-item">
+                                        <form method="post" asp-controller="Courses" asp-action="EditCourse" asp-route-courseId="@Model.ID">
+                                            <button class="btn custom-icon bi-pencil"></button>
+                                        </form>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <form method="post" asp-controller="Courses" asp-action="DeleteCourse" asp-route-courseId="@Model.ID">
+                                            <button class="btn custom-icon bi-trash"></button>
+                                        </form>
+                                    </li>
+                                }
+                                else if (ViewData["userEnrolled"] != null)
+                                {
+                                    <li class="list-inline-item">
+                                        <form method="post" asp-controller="Enrollments" asp-action="Disenroll" asp-route-courseId="@Model.ID">
+                                            <button class="btn custom-icon bi-bookmark-dash"></button>
+                                        </form>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="list-inline-item">
+                                        <form method="post" asp-controller="Enrollments" asp-action="Enroll" asp-route-courseId="@Model.ID">
+                                            <button class="btn custom-icon bi-bookmark-check"></button>
+                                        </form>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li class="list-inline-item"><a asp-controller="Auth" asp-action="Login" class="custom-icon bi-bookmark-check"></a></li>
+                            }
+
+                        </ul>
+                        
+
+                    </div>
+                </div>
+
+                <div class="col-lg-5 col-12">
+                    <div class="topics-detail-block bg-white shadow-lg item-bage-owner">
+                        <span class="badge notify-badge bg-secondary p-1">@Model.EnrollmentCount</span>
+                        <img src="@Model.ImageUrl" class="topics-detail-block-image img-fluid myclass">
+                    </div>
+                </div>
+
             </div>
-         }
-    </div>
-}
+        </div>
+    </header>
+
+    <section class="topics-detail-section section-padding" id="topics-detail">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-8 col-12 m-auto">
+                    <h3 class="mb-4">@Model.Title</h3>
+
+                    <p>@Model.Description</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="explore-section section-padding" id="section_2">
+        <div class="container-fluid">
+            <div class="row">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="assignment-tab" data-bs-toggle="tab" data-bs-target="#assignment-tab-pane" type="button" role="tab" aria-controls="assignment-tab-pane" aria-selected="false">Assignments</button>
+                    </li>
+                    @if (userAuth)
+                    {
+                        if (userRole == "Admin" || (userRole == "Instructor" && userId == Model.InstructorID))
+                        {
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="user-tab" data-bs-toggle="tab" data-bs-target="#user-tab-pane" type="button" role="tab" aria-controls="user-tab-pane" aria-selected="false">Users</button>
+                            </li>
+                        }
+                    }
+
+                </ul>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+
+                <div class="col-12">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade" id="assignment-tab-pane" role="tabpanel" aria-labelledby="assignment-tab" tabindex="0">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-3">
+                                    <div class="custom-block bg-white shadow-lg">
+                                        <a href="topics-detail.html">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <h5 class="mb-2">Composing Song</h5>
+
+                                                    <p class="mb-0">Lorem Ipsum dolor sit amet consectetur</p>
+                                                </div>
+
+                                                <span class="badge bg-music rounded-pill ms-auto">45</span>
+                                            </div>
+
+                                            <img src="images/topics/undraw_Compose_music_re_wpiw.png" class="custom-block-image img-fluid" alt="">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @if (userAuth)
+                        {
+                            if (userRole == "Admin" || (userRole == "Instructor" && userId == Model.InstructorID))
+                            {
+                                <div class="tab-pane fade" id="user-tab-pane" role="tabpanel" aria-labelledby="user-tab" tabindex="1">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-3">
+                                            <div class="custom-block bg-white shadow-lg">
+                                                <a href="topics-detail.html">
+                                                    <div class="d-flex">
+                                                        <div>
+                                                            <h5 class="mb-2">Composing Song</h5>
+
+                                                            <p class="mb-0">Lorem Ipsum dolor sit amet consectetur</p>
+                                                        </div>
+
+                                                        <span class="badge bg-music rounded-pill ms-auto">45</span>
+                                                    </div>
+
+                                                    <img src="images/topics/undraw_Compose_music_re_wpiw.png" class="custom-block-image img-fluid" alt="">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                </div>
+            </div>
+            </div>
+
+    </section>
+
+
+
+    
+
+    @*<div class="row">
+            <img src="@Model.ImageUrl" width="150" height="150" />
+            <p>@Model.Title</p>
+            <p>@Model.Description</p>
+        </div>
+        @if (ViewData["Users"] is not null)
+        {
+            <div class="row">
+                @foreach(var enrollment in ViewData["Users"] as List<EnrollmentWithAllDetails>)
+                 {
+                    <div>
+                        @enrollment.ID <br />
+                        <span>
+                            <form method="post" asp-action="DisenrollStudent" asp-controller="Enrollments" asp-route-courseId="@Model.ID" asp-route-userId="@enrollment.UserID">
+                                <button type="submit" class="btn btn-sm btn-danger">Disenroll student</button>
+                            </form>
+                        </span>
+                    </div>
+                 }
+            </div>
+        }*@
 

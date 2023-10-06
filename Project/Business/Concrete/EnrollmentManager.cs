@@ -60,5 +60,10 @@ namespace Project.Business.Concrete
         {
             return _enrollmentDal.GetAll(e => e.CourseID == courseID);
         }
+
+        public List<EnrollmentWithAllDetails> GetWithDetailsByCourseId(Guid courseID)
+        {
+            return _enrollmentDal.GetAllWithDetails().Where(e=>e.CourseID==courseID).ToList(); 
+        }
     }
 }

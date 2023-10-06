@@ -3,5 +3,14 @@
 *@
 @{
     ViewData["Title"] = "Auth Page";
+    string path = Context.Request.Path.ToString().ToLower();
 }
 
+<div class="row">
+    <div class="col-md-2">
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item nav-link @( path== "/auth" ? "active" : "")">Merhaba</li>
+            <li class="nav-item nav-link @(path == "/auth/" ? "active" : "")">Merhaba</li>
+        </ul>
+    </div>
+</div>
