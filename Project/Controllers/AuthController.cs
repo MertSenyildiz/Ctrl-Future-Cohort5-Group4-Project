@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Project.Business.Abstract;
+using Project.Core.Security.Attributes;
 using Project.Models;
 
 namespace Project.Controllers
@@ -17,6 +19,8 @@ namespace Project.Controllers
         {
             return View();
         }
+
+        [AnonymousOnly]
 
         [HttpPost]
         public IActionResult Login(UserLoginDto loginDto,string returnUrl) 
@@ -36,6 +40,7 @@ namespace Project.Controllers
             ViewData["returnUrl"]=returnUrl;
             return Login(null);
         }
+        [AnonymousOnly]
         [HttpPost]
         public IActionResult Register(UserRegisterDto registerDto,string returnUrl)
         {
@@ -60,6 +65,7 @@ namespace Project.Controllers
             ViewData["returnUrl"] = returnUrl;
             return Register(null);
         }
+
         public IActionResult RefreshToken(string returnUrl)
         {
             string refreshToken;
@@ -81,6 +87,7 @@ namespace Project.Controllers
            
         }
 
+        [Authorize]
         public IActionResult Logout()
         {
             if (HttpContext.User.Identities.Any())
@@ -91,6 +98,7 @@ namespace Project.Controllers
             return Redirect("/");
         }
 
+        [AnonymousOnly]
         public IActionResult Login(string? returnUrl)
         {
             if (ViewData["returnUrl"]==null)
@@ -113,6 +121,7 @@ namespace Project.Controllers
             return View();
         }
 
+        [AnonymousOnly]
         public IActionResult Register(string? returnUrl)
         {
             if (ViewData["returnUrl"] == null)

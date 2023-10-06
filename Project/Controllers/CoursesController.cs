@@ -29,7 +29,7 @@ namespace Project.Controllers
             await _courseService.CreateCourseAsync(course);
             return RedirectToAction("Index");
         }
-
+        [Authorize(Roles ="Admin,Instructor")]
         [HttpPost]
         public IActionResult DeleteCourse(string courseId)
         {
@@ -69,6 +69,10 @@ namespace Project.Controllers
                     && course.InstructorID== Guid.Parse(HttpContext.User.Claims("id")[0])))
                 {
                     ViewData["Users"] =_enrollmentService.GetWithDetailsByCourseId(Guid.Parse(courseId));
+                }
+                else
+                {
+                    ViewData["userEnrolled"] = _enrollmentService.GetByUserAndCourse(Guid.Parse(HttpContext.User.Claims("id")[0]),Guid.Parse(courseId));
                 }
             }
             ViewData["Assignments"] = _enrollmentService.GetWithDetailsByCourseId(Guid.Parse(courseId));

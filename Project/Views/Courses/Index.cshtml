@@ -4,6 +4,7 @@
 @{
     ViewData["Title"]="Courses";
     var category = (int?)ViewData["categoryFilter"] ?? -1;
+    var categories = Enum.GetValues(typeof(CourseCategory));
 }
 @model IEnumerable<CourseWithAllDetails>
 <style>
@@ -31,6 +32,17 @@
         color: var(--white-color);
         max-width: 150px;
     }
+
+    .custom-block-image {
+        display: block;
+        width: 100%;
+        height: 250px;
+        object-fit: fill;
+        margin-top: 35px;
+    }
+    .max-height-p {
+        max-height: 60px;
+    }
 </style>
 
     <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
@@ -40,7 +52,7 @@
                 <div class="col-lg-8 col-12 mx-auto">
                     <h1 class="text-white text-center">Discover. Learn. Enjoy</h1>
 
-                    <h6 class="text-center">platform for creatives around the world</h6>
+                    <h6 class="text-center">Search a course for your interest</h6>
 
                     <div class="custom-form mt-4 pt-2 mb-lg-0 mb-5" role="search">
                         <div class="input-group input-group-lg">
@@ -59,57 +71,95 @@
         </div>
     </section>
 
-<section class="section-padding">
-    <div class="album py-5 bg-light">
-        <div class="container">
-            <ul class="list-group list-group-horizontal">
-                <li class="list-group-item @(category==1?"active":"")"><a asp-action="Index" asp-route-nameFilter="@(ViewData["nameFilter"]??"")" asp-route-categoryFilter="1">Development</a></li>
-                <li class="list-group-item @(category==2?"active":"")"><a asp-action="Index" asp-route-nameFilter="@(ViewData["nameFilter"]??"")" asp-route-categoryFilter="2">Deneme</a></li>
-                <li class="list-group-item @(category==3?"active":"")"><a asp-action="Index" asp-route-nameFilter="@(ViewData["nameFilter"]??"")" asp-route-categoryFilter="3">Deneme 3</a></li>
-            </ul>
-            @*<input type="search" placeholder="Search" aria-label="Search" id="nameFilter" value="@ViewData["nameFilter"]">
-            <a href="/Courses" id="search" class="btn btn-outline-success my-2 my-sm-0">Search</a>*@
-            <div class="row">
-                @foreach (var item in Model)
-                {
-                    <div class="col-md-4">
-                        <div class="card mb-4 box-shadow">
-                            <img class="card-img-top" src="@item.ImageUrl" width="100%" height="225" alt="Card image cap">
-                            <div class="card-body">
-                                <p class="card-text">@item.Title</p>
-                                <p class="card-text">@item.Description</p>
-                                <p class="card-text">@item.EnrollmentCount People Take This Course</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <a type="btn btn-success" asp-controller="Course" asp-action="@item.ID"
-                                           class="btn btn-sm btn-outline-info">View</a>
-                                        <a asp-controller="Course" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-outline-secondary">Edit</a>
-                                        @if (Context.User.HasClaim(a => true))
-                                        {
-                                            var role = Context.User.Claims(ClaimTypes.Role)[0];
-                                            if (role == "Student")
-                                            {
-                                                <form asp-controller="Enrollments" asp-action="Enroll" method="POST" asp-route-courseId="@item.ID">
-                                                    <button type="submit" class="btn btn-sm btn-success">Enroll</button>
-                                                </form>
-                                            }
-                                            else if (role == "Admin")
-                                            {
-                                                <form asp-controller="Courses" asp-action="DeleteCourse" method="POST" asp-route-courseId="@item.ID">
-                                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                                </form>
-                                            }
-                                        }
-                                    </div>
-                                    <small class="text-muted">@item.Category</small>
+
+<section id="section_2">
+    <div class="container">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link @(category==-1?"active":"")" aria-current="page" asp-action="Index" asp-route-nameFilter="@ViewData["nameFilter"]">All</a>
+            </li>
+            @foreach (var i in categories)
+            {
+
+                <li class="nav-item">
+                    <a class="nav-link @(((int)i)==category?"active":"")" style="color:@CourseCategoryClass.Colors[(int)i]" aria-current="page" asp-action="Index" asp-route-nameFilter="@ViewData["nameFilter"]" asp-route-categoryFilter="@((int)i)">@i</a>
+                </li>
+            }
+        </ul>
+    </div>
+</section>
+
+<section class="section-padding" id="section_3">
+    <div class="container">
+        <div class="row">
+            @foreach (var course in Model)
+            {
+                <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-4">
+                    <div class="custom-block bg-white shadow-lg">
+                        <a asp-controller="Course" asp-action="@course.ID">
+                            <div class="d-flex">
+                                <div>
+                                    <h5 class="mb-2">@course.Title</h5>
+                                    <i>by @course.Username</i>
+                                    <p class="mb-0 text-wrap overflow-hidden max-height-p">@course.Description</p>
                                 </div>
+
+                                <span class="badge bg-design rounded-pill ms-auto" style="background-color:@CourseCategoryClass.Colors[(int)course.Category]">@course.EnrollmentCount</span>
+                            </div>
+
+                            <img src="@course.ImageUrl" class="custom-block-image img-fluid" alt="">
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+        
+    </div>
+    
+</section>
+
+@*<section class="section-padding" id="section_4">
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <img class="card-img-top" src="@item.ImageUrl" width="100%" height="225" alt="Card image cap">
+                        <div class="card-body">
+                            <p class="card-text">@item.Title</p>
+                            <p class="card-text">@item.Description</p>
+                            <p class="card-text">@item.EnrollmentCount People Take This Course</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a type="btn btn-success" asp-controller="Course" asp-action="@item.ID"
+                                       class="btn btn-sm btn-outline-info">View</a>
+                                    <a asp-controller="Course" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                    @if (Context.User.HasClaim(a => true))
+                                    {
+                                        var role = Context.User.Claims(ClaimTypes.Role)[0];
+                                        if (role == "Student")
+                                        {
+                                            <form asp-controller="Enrollments" asp-action="Enroll" method="POST" asp-route-courseId="@item.ID">
+                                                <button type="submit" class="btn btn-sm btn-success">Enroll</button>
+                                            </form>
+                                        }
+                                        else if (role == "Admin")
+                                        {
+                                            <form asp-controller="Courses" asp-action="DeleteCourse" method="POST" asp-route-courseId="@item.ID">
+                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                            </form>
+                                        }
+                                    }
+                                </div>
+                                <small class="text-muted">@item.Category</small>
                             </div>
                         </div>
                     </div>
-                }
+                </div>
+            }
 
-            </div>
         </div>
     </div>
-</section>
+</section>*@
 

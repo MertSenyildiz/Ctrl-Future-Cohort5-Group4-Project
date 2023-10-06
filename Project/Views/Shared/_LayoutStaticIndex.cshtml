@@ -34,7 +34,7 @@
                     @if (user.HasClaim(a => a.Type == ClaimTypes.Role))
                     {
 
-                       <h6>@user.Claims(ClaimTypes.Role)[0] , @user.Claims("username")[0] </h6>
+                        <h6>@user.Claims(ClaimTypes.Role)[0] , @user.Claims("username")[0] </h6>
                     }
                 </div>
 
@@ -49,7 +49,11 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" href="#section_2">Browse Topics</a>
+                            <a class="nav-link click-scroll" href="#section_2">Browse Categories</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Courses" asp-action="Index">Browse Courses</a>
                         </li>
 
                         <li class="nav-item">
@@ -63,7 +67,6 @@
                         <li class="nav-item">
                             <a class="nav-link click-scroll" href="#section_5">Contact</a>
                         </li>
-
 
                         @if (!user.HasClaim(a => a.Type == ClaimTypes.Role))
                         {
@@ -135,8 +138,8 @@
 
 
 
-           @RenderBody()
-        
+        @RenderBody()
+
 
     </main>
 
@@ -146,7 +149,7 @@
             <div class="row">
 
                 <div class="col-lg-3 col-12 mb-4 pb-2">
-                    <a class="navbar-brand mb-2" href="index.html">
+                    <a class="navbar-brand mb-2" asp-controller="Home" asp-action="Index">
                         <i class="bi-back"></i>
                         <span>AgiLearn</span>
                     </a>
@@ -157,19 +160,19 @@
 
                     <ul class="site-footer-links">
                         <li class="site-footer-link-item">
-                            <a href="#" class="site-footer-link">Home</a>
+                            <a href="/Home/" class="site-footer-link">Home</a>
                         </li>
 
                         <li class="site-footer-link-item">
-                            <a href="#" class="site-footer-link">How it works</a>
+                            <a href="/Home/#section_3" class="site-footer-link">How it works</a>
                         </li>
 
                         <li class="site-footer-link-item">
-                            <a href="#" class="site-footer-link">FAQs</a>
+                            <a href="/Home/#section_4" class="site-footer-link">FAQs</a>
                         </li>
 
                         <li class="site-footer-link-item">
-                            <a href="#" class="site-footer-link">Contact</a>
+                            <a href="/Home/#section_5" class="site-footer-link">Contact</a>
                         </li>
                     </ul>
                 </div>
@@ -193,18 +196,10 @@
                 <div class="col-lg-3 col-md-4 col-12 mt-4 mt-lg-0 ms-auto">
                     <div class="dropdown">
 
-
-                        <ul class="dropdown-menu">
-                            <li><button class="dropdown-item" type="button">Thai</button></li>
-
-                            <li><button class="dropdown-item" type="button">Myanmar</button></li>
-
-                            <li><button class="dropdown-item" type="button">Arabic</button></li>
-                        </ul>
                     </div>
 
                     <p class="copyright-text mt-lg-5 mt-4">
-                        Copyright © 2048 Topic Listing Center. All rights reserved.
+                        Copyright © @DateTime.Now.Year AgiLearn Center. All rights reserved.
                         <br><br>Design: <a rel="nofollow" href="https://templatemo.com" target="_blank">TemplateMo</a> Distribution <a href="https://themewagon.com">ThemeWagon</a>
                     </p>
 
