@@ -8,7 +8,7 @@
 @using Project.Data.Enum
 @model CourseToAddDto
 
-<form method="post" asp-action="Create" enctype="multipart/form-data">
+<form class="custom-form" method="post" asp-action="Create" enctype="multipart/form-data">
     <div class="form-group">
         <label asp-for="Title">Title</label>
         <input asp-for="Title" class="form-control" placeholder="Title">
@@ -32,5 +32,5 @@
         <span asp-validation-for="ImageFile" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="form-control btn btn-primary">Submit</button>
 </form>
