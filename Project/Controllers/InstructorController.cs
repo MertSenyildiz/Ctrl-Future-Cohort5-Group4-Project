@@ -28,7 +28,7 @@ namespace Project.Controllers
         {
             // Implement the logic to add a course using _courseService.CreateCourse(courseToAdd);
             // Redirect to appropriate view or action
-            _courseService.CreateCourse(courseToAdd);
+            _courseService.CreateCourseAsync(courseToAdd);
             return RedirectToAction("Index");
         }
 
