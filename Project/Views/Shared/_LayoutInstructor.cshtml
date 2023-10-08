@@ -1,7 +1,7 @@
 ﻿@using System.Security.Claims
 @{
     var user = Context.User;
-    var path = Context.Request.Path.ToString().ToLower();
+    var path = Context.Request.Path.ToString().ToLower().Replace("ı","i");
 }
 <!DOCTYPE html>
 
@@ -125,10 +125,10 @@
                 </div>
             </div>
         </nav>
-        <section class="section-padding my-bg" id="section_1">
-            <div class="container">
+        <section class="section-padding my-bg" id="section_1" style="min-height:70%;">
+            <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-2 col-lg-2">
+                    <div class="col-md-2 col-lg-2 border-end border-2">
                         <ul class="nav nav-pills flex-column mb-auto">
                             <li class="nav-item cursor-pointer"><a class="nav-link @(path == "/instructor" ? "active" : "")" asp-controller="Instructor" asp-action="Index">Instructor Dashboard</a></li>
 
