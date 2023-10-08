@@ -33,10 +33,13 @@ namespace Project.Core.Extensions
 
             public static void InjectDbContextFactory(this IServiceCollection services, IConfiguration configuration)
             {
-                services.AddDbContextFactory<ProjectDbContext>(
-                    options => options.UseSqlServer(configuration.GetConnectionString("ProjectConnectionString"))
-                );
-            }
+            services.AddDbContextFactory<ProjectDbContext>(
+                options => options.UseSqlServer(configuration.GetConnectionString("ProjectConnectionString"))
+            );
+            //services.AddDbContextFactory<ProjectDbContext>(
+            //    options => options.UseSqlServer(configuration.GetConnectionString("AzureConnectionString"))
+            //);
+        }
 
             public static void InjectConfigurableServices(this IServiceCollection services, IConfiguration configuration)
             {

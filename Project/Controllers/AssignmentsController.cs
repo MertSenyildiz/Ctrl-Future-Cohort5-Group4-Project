@@ -16,7 +16,8 @@ namespace Project.Controllers
         [HttpPost]
         public ActionResult CreateAssignment(Assignment assignment)
         {
-            _assignmentService.CreateAssignment(assignment);
+            if(ModelState.IsValid)
+                _assignmentService.CreateAssignment(assignment);
             return RedirectToAction($"{assignment.CourseID}","Course");
         }
 

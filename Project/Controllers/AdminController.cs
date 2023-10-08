@@ -5,7 +5,8 @@ using Project.Core.Extensions;
 using Project.Models;
 
 namespace Project.Controllers
-{ 
+{
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         
@@ -55,7 +56,6 @@ namespace Project.Controllers
                 Title = course.Title,
                 Description = course.Description,
                 Category = course.Category,
-                InstructorID= course.InstructorID,
             };
             ViewData["Instructors"] = _userService.GetByRole("Instructor");
             return View(courseDTO);
@@ -78,7 +78,7 @@ namespace Project.Controllers
                     ID = id,
                     Title = _courseDto.Title,
                     Description = _courseDto.Description,
-                    InstructorID = _courseDto.InstructorID,
+                    InstructorID = _course.InstructorID,
                     Category = _courseDto.Category,
                     ImageFile = _courseDto.ImageFile, 
                     /* courseDto image ile Course image data type farklı */
