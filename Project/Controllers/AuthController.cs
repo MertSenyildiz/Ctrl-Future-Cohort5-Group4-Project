@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Project.Business.Abstract;
+using Project.Core.Security.Attributes;
 using Project.Models;
 
 namespace Project.Controllers
@@ -17,6 +19,8 @@ namespace Project.Controllers
         {
             return View();
         }
+
+        [AnonymousOnly]
 
         [HttpPost]
         public IActionResult Login(UserLoginDto loginDto,string returnUrl) 
@@ -36,8 +40,9 @@ namespace Project.Controllers
             ViewData["returnUrl"]=returnUrl;
             return Login(null);
         }
+        [AnonymousOnly]
         [HttpPost]
-        public IActionResult Register(UserRegisterDto registerDto)
+        public IActionResult Register(UserRegisterDto registerDto,string returnUrl)
         {
             if(ModelState.IsValid)
             {
@@ -49,12 +54,18 @@ namespace Project.Controllers
                         var token = _authService.CreateAccessToken(user);
                         AddToCookie("X-Access-Token", token.Token, token.Expiration);
                         AddToCookie("X-Refresh-Token", token.RefreshToken, DateTime.Now.AddDays(7));
+                        if (Url.IsLocalUrl(returnUrl))
+                        {
+                            return Redirect(returnUrl);
+                        }
                         return Redirect("/");
                     }
                 }
             }
-            return Register();
+            ViewData["returnUrl"] = returnUrl;
+            return Register(null);
         }
+
         public IActionResult RefreshToken(string returnUrl)
         {
             string refreshToken;
@@ -76,6 +87,7 @@ namespace Project.Controllers
            
         }
 
+        [Authorize]
         public IActionResult Logout()
         {
             if (HttpContext.User.Identities.Any())
@@ -86,6 +98,7 @@ namespace Project.Controllers
             return Redirect("/");
         }
 
+        [AnonymousOnly]
         public IActionResult Login(string? returnUrl)
         {
             if (ViewData["returnUrl"]==null)
@@ -108,8 +121,26 @@ namespace Project.Controllers
             return View();
         }
 
-        public IActionResult Register()
+        [AnonymousOnly]
+        public IActionResult Register(string? returnUrl)
         {
+            if (ViewData["returnUrl"] == null)
+            {
+                if (returnUrl is not null)
+                {
+                    ViewData["returnUrl"] = returnUrl;
+                }
+                else if (Request.Headers["Referer"].Any())
+                {
+                    var address = new Uri(Request.Headers["Referer"]);
+                    if (address.PathAndQuery != "/Auth/Login")
+                        ViewData["returnUrl"] = address.PathAndQuery;
+                }
+                else
+                {
+                    ViewData["returnUrl"] = "/";
+                }
+            }
             return View();
         }
 

@@ -401,3 +401,5 @@ FodyWeavers.xsd
 
 appsettings.json
 **/appsettings.json
+
+**/wwwroot/templateContent

@@ -17,7 +17,7 @@ namespace Project.Core.Helpers.FileHelpers
             if(file is not null)
             {
                 filePath = Path.Combine(path, Guid.NewGuid().ToString() + Path.GetExtension(file.FileName));
-                using FileStream fileStream = new FileStream(filePath, FileMode.Create);
+                using FileStream fileStream = new(filePath, FileMode.Create);
                 await file.CopyToAsync(fileStream);
             }
             return filePath.Replace("wwwroot","");

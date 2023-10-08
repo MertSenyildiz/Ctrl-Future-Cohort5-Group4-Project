@@ -12,13 +12,12 @@ namespace Project.Business.Concrete
         IUserService _userService;
         private readonly ICourseDal _courseDal;
         IFileHelper _fileSaver;
-        
-        public AdministrationManager(IUserDal userDal, ICourseDal courseDal,IUserService userService,IFileHelper fileSaver) 
+        public AdministrationManager(IUserDal userDal, ICourseDal courseDal, IUserService userService, IFileHelper fileSaver)
         {
             _userDal = userDal;
             _courseDal = courseDal;
             _fileSaver = fileSaver;
-            _userService=userService;
+            _userService = userService;
         }
 
         public void Add(User user)
