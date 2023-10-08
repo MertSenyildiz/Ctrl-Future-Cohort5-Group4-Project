@@ -25,6 +25,12 @@
             background: rgb(17,208,158);
             background: linear-gradient(180deg, rgba(17,208,158,1) 0%, rgba(9,103,121,1) 41%, rgba(250,250,250,1) 100%);
         }
+
+        .vertical-line {
+            height: 100%; /* Dikey çizginin sol sütun yüksekliği kadar uzanmasını sağlar */
+            border-left: 1px solid #ccc; /* Dikey çizgiyi çizmek için kullanılan stil */
+            margin: 0; /* Kenar boşluğunu sıfırlar */
+        }
     </style>
 </head>
 <body id="top">
@@ -76,7 +82,7 @@
                             }
                             @if (user.Claims(ClaimTypes.Role)[0] == "Instructor")
                             {
-                                <li class="nav-item d-lg-none"><a class="nav-item nav-link" href="#">Instructor Panel</a></li>
+                                <li class="nav-item d-lg-none"><a class="nav-item nav-link" asp-controller="Instructor" asp-action="Index">Instructor Panel</a></li>
                             }
                             <li class="nav-item d-lg-none"><a class="nav-item nav-link" asp-controller="Courses" asp-action="MyCourses">My Courses</a></li>
                             <li class="nav-item d-lg-none"><a class="nav-item nav-link" asp-controller="Auth" asp-action="Logout">Logout</a></li>
@@ -101,7 +107,7 @@
                                         }
                                         @if (user.Claims(ClaimTypes.Role)[0] == "Instructor")
                                         {
-                                            <li><a class="dropdown-item" href="#">Instructor Panel</a></li>
+                                            <li><a class="dropdown-item" asp-controller="Instructor" asp-action="Index">Instructor Panel</a></li>
                                         }
                                         <li><a class="dropdown-item" asp-controller="Courses" asp-action="MyCourses">My Courses</a></li>
                                         <li><hr class="dropdown-divider"></li>
@@ -134,8 +140,9 @@
                         <li class="nav-item cursor-pointer"><a class="nav-link @(path == "/admin/usermanager" ? "active" : "")" asp-controller="Admin" asp-action="UserManager">UserManager</a></li>
 
                         <li class="nav-item cursor-pointer"><a class="nav-link @(path == "/admin/create" ? "active" : "")" asp-controller="Admin" asp-action="Create">Create Course</a></li>
-
+                        
                     </ul>
+                    <hr class=" vertical-line">
                 </div>
                 <div class="col-md-10">
                     @RenderBody()

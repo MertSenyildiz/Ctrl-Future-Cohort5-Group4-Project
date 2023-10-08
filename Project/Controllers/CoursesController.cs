@@ -11,16 +11,20 @@ namespace Project.Controllers
     {
         ICourseService _courseService;
         IEnrollmentService _enrollmentService;
-        public CoursesController(ICourseService courseService,IEnrollmentService enrollmentService)
+        IAssignmentService _assignmentService;
+        public CoursesController(ICourseService courseService,IEnrollmentService enrollmentService, IAssignmentService assignmentService)
         {
             _courseService = courseService;
             _enrollmentService = enrollmentService;
+            _assignmentService = assignmentService;
         }
         [Authorize(Roles ="Instructor")]
         public ActionResult Create() {
             
             return View();
         }
+
+        [Authorize(Roles = "Instructor")]
         [HttpPost]
         public async Task<IActionResult> CreateAsync(CourseToAddDto course)
         {
@@ -75,7 +79,7 @@ namespace Project.Controllers
                     ViewData["userEnrolled"] = _enrollmentService.GetByUserAndCourse(Guid.Parse(HttpContext.User.Claims("id")[0]),Guid.Parse(courseId));
                 }
             }
-            ViewData["Assignments"] = _enrollmentService.GetWithDetailsByCourseId(Guid.Parse(courseId));
+            ViewData["Assignments"] = _assignmentService.GetAllAssignmentsWithDetailsByCourse(Guid.Parse(courseId));
             return View(course);
         }
 

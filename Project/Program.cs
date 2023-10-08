@@ -69,7 +69,7 @@ namespace Project
             }
 
             app.UseMiddleware<RefreshTokenMiddleware>();
-            
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

@@ -68,7 +68,7 @@ namespace Project.DataAccess.Concrete
                                   CourseTitle = c.Title,
                                   CourseDescription = c.Description,
                               }
-                ).OrderBy(a=>a.CourseTitle).AsNoTracking().ToList();
+                ).OrderBy(a=>a.DueDate).AsNoTracking().ToList();
             return assignments;
         }
     }
