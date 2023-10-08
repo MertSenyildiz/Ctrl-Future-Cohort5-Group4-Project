@@ -2,6 +2,7 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    ViewData["Title"] = "Course";
     var categories = Enum.GetValues(typeof(CourseCategory));
     var userAuth = Context.User.Identity.IsAuthenticated;
     var userRole = userAuth ? Context.User.Claims(ClaimTypes.Role)[0] : null;
@@ -211,27 +212,32 @@
                         {
                             if (userRole == "Admin" || (userRole == "Instructor" && userId == Model.InstructorID))
                             {
-                                <div class="tab-pane fade" id="user-tab-pane" role="tabpanel" aria-labelledby="user-tab" tabindex="1">
-                                    <div class="row">
-                                        <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-3">
-                                            <div class="custom-block bg-white shadow-lg">
-                                                <a href="topics-detail.html">
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <h5 class="mb-2">Composing Song</h5>
 
-                                                            <p class="mb-0">Lorem Ipsum dolor sit amet consectetur</p>
-                                                        </div>
 
-                                                        <span class="badge bg-music rounded-pill ms-auto">45</span>
-                                                    </div>
+<div class="tab-pane fade" id="user-tab-pane" role="tabpanel" aria-labelledby="user-tab" tabindex="1">
 
-                                                    <img src="images/topics/undraw_Compose_music_re_wpiw.png" class="custom-block-image img-fluid" alt="">
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+    @foreach (var user in ViewData["Users"] as List<EnrollmentWithAllDetails>)
+    {
+        <div class="row mb-4 border-bottom border-4" style="height:60px">
+            <div class="col-lg-4 col-4">
+                <span>@user.Username</span>
+            </div>
+            <div class="col-lg-4 col-4">
+                <span>@user.Email</span>
+            </div>
+            <div class="col-lg-3 col-3">
+                <span>@(DateOnly.FromDateTime(user.EnrollmentDate))</span>
+            </div>
+            <div class="col-lg-1 col-1">
+                <form method="post" asp-controller="Enrollments" asp-action="DisenrollStudent" asp-route-courseId="@Model.ID" asp-route-userId="@user.UserID">
+                    <button class="btn bi-trash text-bg-danger"></button>
+                </form>
+            </div>
+        </div>
+            }
+
+        </div>
+    
                             }
                         }
 

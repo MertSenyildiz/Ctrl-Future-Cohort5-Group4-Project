@@ -8,6 +8,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    <link rel="icon" runat="server" href=@Url.Content("/website.ico") type="image/ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,6 +20,7 @@
     <link href="/templateContent/css/bootstrap-icons.css" rel="stylesheet">
 
     <link href="/templateContent/css/templatemo-topic-listing.css" rel="stylesheet">
+
 </head>
 <body id="top">
     <main>
@@ -61,11 +63,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" href="#section_4">FAQs</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link click-scroll" href="#section_5">Contact</a>
+                            <a class="nav-link click-scroll" href="#section_4">About Us</a>
                         </li>
 
                         @if (!user.HasClaim(a => a.Type == ClaimTypes.Role))
@@ -168,7 +166,7 @@
                         </li>
 
                         <li class="site-footer-link-item">
-                            <a href="/Home/#section_4" class="site-footer-link">FAQs</a>
+                            <a href="/Home/#section_4" class="site-footer-link">About Us</a>
                         </li>
 
                         <li class="site-footer-link-item">

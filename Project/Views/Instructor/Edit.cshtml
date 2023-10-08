@@ -1,7 +1,10 @@
-﻿@using Project.Data.Enum
+﻿@{
+    Layout = "_LayoutInstructor";
+    ViewData["Title"] ="Edit Course";
+}
+@using Project.Data.Enum
 @model CourseToAddDto
-
-<form method="post" asp-action="Edit" enctype="multipart/form-data">
+<form class="custom-form" method="post" asp-action="Edit" enctype="multipart/form-data">
     <input type="hidden" value="ID" id="ID" />
     <div class="form-group">
         <label asp-for="Title">Title</label>

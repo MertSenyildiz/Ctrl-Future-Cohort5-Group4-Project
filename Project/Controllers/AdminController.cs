@@ -27,7 +27,7 @@ namespace Project.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Index( )
         {
-            var courses =  _adminService.GetAllCourses( ); /* Bringing all the table from database and drop into your table */
+            var courses =  _courseService.GetAllCoursesWithDetail(); /* Bringing all the table from database and drop into your table */
 
             return View(courses);
         }
