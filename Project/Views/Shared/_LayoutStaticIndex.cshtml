@@ -110,7 +110,7 @@
                                         }
                                         @if (user.Claims(ClaimTypes.Role)[0] == "Instructor")
                                         {
-                                            <li><a class="dropdown-item" href="#">Instructor Panel</a></li>
+                                            <li><a class="dropdown-item" asp-controller="Instructor" asp-action="Index">Instructor Panel</a></li>
                                         }
                                         <li><a class="dropdown-item" asp-controller="Courses" asp-action="MyCourses">My Courses</a></li>
                                         <li><hr class="dropdown-divider"></li>

@@ -126,19 +126,23 @@
             </div>
         </nav>
         <section class="section-padding my-bg" id="section_1">
-            <div class="row">
-                <div class="col-md-2">
-                    <ul class="nav nav-pills flex-column mb-auto">
-                        <li class="nav-item cursor-pointer"><a class="nav-link @(path == "/instructor" ? "active" : "")" asp-controller="Instructor" asp-action="Index">Instructor Dashboard</a></li>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2 col-lg-2">
+                        <ul class="nav nav-pills flex-column mb-auto">
+                            <li class="nav-item cursor-pointer"><a class="nav-link @(path == "/instructor" ? "active" : "")" asp-controller="Instructor" asp-action="Index">Instructor Dashboard</a></li>
 
-                        <li class="nav-item cursor-pointer"><a class="nav-link @(path == "/instructor/create" ? "active" : "")" asp-controller="Instructor" asp-action="Create">Create Course</a></li>
+                            <li class="nav-item cursor-pointer"><a class="nav-link @(path == "/instructor/create" ? "active" : "")" asp-controller="Instructor" asp-action="Create">Create Course</a></li>
 
-                    </ul>
-                </div>
-                <div class="col-md-10">
-                    @RenderBody()
+                        </ul>
+                    </div>
+                    <div class="col-md-10 col-lg-10">
+                        @RenderBody()
+                    </div>
                 </div>
             </div>
+                
+            
         </section>
 
 

@@ -9,30 +9,31 @@ namespace Project.Controllers
     public class InstructorController : Controller
     {
         IInstructorService _instructorService;
+        ICourseService _courseService;
 
-        public InstructorController(IInstructorService instructorService)
+        public InstructorController(IInstructorService instructorService,ICourseService courseService)
         {
             _instructorService = instructorService;
+            _courseService = courseService;
         }
         [Authorize(Roles = "Instructor")]
         public ActionResult Create()
         {
-
             return View();
         }
         [Authorize(Roles = "Instructor")]
         public IActionResult Index()
         {
-            var courses = _instructorService.GetAllCourses(); /* Bringing all the table from database and drop into your table */
+            var courses = _courseService.GetAllCoursesWithDetail(); /* Bringing all the table from database and drop into your table */
 
             return View(courses);
         }
         [HttpPost]
         public async Task<IActionResult> Create(CourseToAddDto course)
         {
-            //var id = HttpContext.User.Claims("id")[0];
-            // course.InstructorID = Guid.Parse(id);
-            await _instructorService.CreateCourse(course);
+            var id = HttpContext.User.Claims("id")[0];
+            course.InstructorID = Guid.Parse(id);
+            await _courseService.CreateCourseAsync(course);
             return RedirectToAction("Index");
         }
 

@@ -6,30 +6,49 @@
     Layout = "_LayoutInstructor";
 }
 
-@model IEnumerable<Course>
+<style>
+    .custom-block-image {
+        display: block;
+        width: 100%;
+        height: 250px;
+        object-fit: fill;
+        margin-top: 35px;
+    }
+
+    .min-height {
+        min-height: 60%;
+        min-height: 60vh;
+    }
+
+    .max-height-p {
+        max-height: 60px;
+    }
+</style>
+
+@model IEnumerable<CourseWithAllDetails>
 
 
 <h1>All Courses</h1>
 
 <div class="container">
     <div class="row">
-        @foreach (var item in Model)
+        @foreach (var course in Model)
         {
-            <div class="col-md-4">
-                <div class="card mb-4 box-shadow">
-                    <img class="card-img-top" src="@item.ImageUrl" width="100%" height="225" alt="Card image cap">
-                    <div class="card-body">
-                        <p class="card-text">@item.Title</p>
-                        <p class="card-text">@item.Description</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <a type="btn btn-success" asp-controller="Instructor" asp-action="Detail" asp-route-id="@item.ID"
-                                   class="btn btn-sm btn-outline-secondary">View</a>
-                                <a asp-controller="Instructor" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-outline-secondary">Edit</a>
+            <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-4">
+                <div class="custom-block bg-white shadow-lg">
+                    <a asp-controller="Course" asp-action="@course.ID">
+                        <div class="d-flex">
+                            <div>
+                                <h5 class="mb-2">@course.Title</h5>
+                                <i>by @course.Username</i>
+                                <p class="mb-0 text-wrap overflow-hidden max-height-p">@course.Description</p>
                             </div>
-                            <small class="text-muted">@item.Category</small>
+
+                            <span class="badge bg-design rounded-pill ms-auto" style="background-color:@CourseCategoryClass.Colors[(int)course.Category]">@course.EnrollmentCount</span>
                         </div>
-                    </div>
+
+                        <img src="@course.ImageUrl" class="custom-block-image img-fluid" alt="">
+                    </a>
                 </div>
             </div>
         }
