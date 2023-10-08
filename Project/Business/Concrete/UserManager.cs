@@ -22,6 +22,10 @@ namespace Project.Business.Concrete
         {
             return _userDal.GetAll().Select(u=>new UserToShowDto { ID=u.ID,Email=u.Email,Username=u.Username,Role=u.Role}).ToList();
         }
+        public List<UserToShowDto> GetByRole(string role)
+        {
+             return GetAll().Where(u => u.Role == role).ToList( );
+        }
 
         public User GetById(Guid id)
         {

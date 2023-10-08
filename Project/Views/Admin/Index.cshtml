@@ -22,7 +22,7 @@
                                 <p class="card-text">@item.Description</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <a type="btn btn-success" asp-controller="Admin" asp-action="Detail" asp-route-id="@item.ID"
+                                        <a type="btn btn-success" asp-controller="Course" asp-action="@item.ID"
                                            class="btn btn-sm btn-outline-secondary">View</a>
                                         <a asp-controller="Admin" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-outline-secondary">Edit</a>
 

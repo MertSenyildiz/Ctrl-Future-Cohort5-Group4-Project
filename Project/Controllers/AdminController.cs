@@ -10,14 +10,16 @@ namespace Project.Controllers
     {
         
         IAdminService _adminService;
-        
-        public AdminController(IAdminService adminService)
+        IUserService _userService;
+        public AdminController(IAdminService adminService, IUserService userService)
         {
             _adminService = adminService;
+            _userService = userService;
         }
         [Authorize(Roles ="Admin")]
         public ActionResult Create() {
             
+            ViewData["Instructors"] = _userService.GetByRole("Instructor");
             return View();
         }
         [Authorize(Roles = "Admin")]
