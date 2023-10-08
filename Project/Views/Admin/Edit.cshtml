@@ -13,10 +13,19 @@
     </div>
     <div class="form-group">
         <label for="Instuctor">Instructor</label>
-        <select class="form-control" name="InstructorID" id="Instructor" >
+        <select class="form-control" name="InstructorID" id="Instructor">
             @foreach (var instructor in ViewData["Instructors"] as List<UserToShowDto>)
             {
-                <option selected="@(instructor.ID==Model.InstructorID?"selected":"")" value="@instructor.ID">@instructor.Username</option>
+
+
+                @if (instructor.ID == Model.InstructorID)
+                {
+                    <option selected value="@instructor.ID">@instructor.Username</option>
+                }
+                else
+                {
+                    <option value="@instructor.ID">@instructor.Username</option>
+                }
             }
         </select>
         <span for="Instructor" class="text-danger"> </span>
