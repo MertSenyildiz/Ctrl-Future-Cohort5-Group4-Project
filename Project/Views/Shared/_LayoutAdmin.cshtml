@@ -26,11 +26,20 @@
             background: linear-gradient(180deg, rgba(17,208,158,1) 0%, rgba(9,103,121,1) 41%, rgba(250,250,250,1) 100%);
         }
 
-        .vertical-line {
-            height: 100%; /* Dikey çizginin sol sütun yüksekliği kadar uzanmasını sağlar */
-            border-left: 1px solid #ccc; /* Dikey çizgiyi çizmek için kullanılan stil */
-            margin: 0; /* Kenar boşluğunu sıfırlar */
+
+        .merto {
+            color: black; /* Tüm metinleri varsayılan olarak siyah yapar */
         }
+
+        .mertonotactive {
+            color: white;
+        }
+
+        .nav-link:hover {
+            color: inherit;
+            background-color: transparent;
+        }
+
     </style>
 </head>
 <body id="top">
@@ -136,14 +145,13 @@
                 <div class="row">
                     <div class="col-md-2 col-lg-2 border-end border-2">
                         <ul class="nav nav-pills flex-column mb-auto">
-                            <li class="nav-item cursor-pointer"><a class="nav-link @(path == "/admin" ? "active" : "")" asp-controller="Admin" asp-action="Index">Admin Dashboard</a></li>
+                            <li class="nav-item cursor-pointer merto"><a class="nav-link hover @(path == "/admin" ? "merto" : "mertonotactive")" asp-controller="Admin" asp-action="Index">Admin Dashboard</a></li>
 
-                            <li class="nav-item cursor-pointer"><a class="nav-link @(path == "/admin/usermanager" ? "active" : "")" asp-controller="Admin" asp-action="UserManager">UserManager</a></li>
+                            <li class="nav-item cursor-pointer merto"><a class="nav-link hover @(path == "/admin/usermanager" ? "merto" : "mertonotactive")" asp-controller="Admin" asp-action="UserManager">UserManager</a></li>
 
-                            <li class="nav-item cursor-pointer"><a class="nav-link @(path == "/admin/create" ? "active" : "")" asp-controller="Admin" asp-action="Create">Create Course</a></li>
+                            <li class="nav-item cursor-pointer merto"><a class="nav-link hover @(path == "/admin/create" ? "merto" : "mertonotactive")" asp-controller="Admin" asp-action="Create">Create Course</a></li>
 
                         </ul>
-                        <hr class=" vertical-line">
                     </div>
                     <div class="col-md-10 col-lg-10">
                         @RenderBody()
