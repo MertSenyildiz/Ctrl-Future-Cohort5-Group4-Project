@@ -11,10 +11,12 @@ namespace Project.Controllers
         
         IAdminService _adminService;
         IUserService _userService;
-        public AdminController(IAdminService adminService, IUserService userService)
+        ICourseService _courseService;
+        public AdminController(IAdminService adminService, IUserService userService, ICourseService courseService)
         {
             _adminService = adminService;
             _userService = userService;
+            _courseService = courseService;
         }
         [Authorize(Roles ="Admin")]
         public ActionResult Create() {
@@ -71,18 +73,17 @@ namespace Project.Controllers
             if(_course != null)
             {
                 //var photoResult = await _photoService.AddPhotoAsync(clubVM.Image);
-                var editedCourse = new Course
+                var editedCourse = new CourseToUpdateDto
                 {
                     ID = id,
                     Title = _courseDto.Title,
                     Description = _courseDto.Description,
                     InstructorID = _courseDto.InstructorID,
                     Category = _courseDto.Category,
-                    EnrollmentCount = _course.EnrollmentCount,
-                    ImageUrl = _course.ImageUrl, 
+                    ImageFile = _courseDto.ImageFile, 
                     /* courseDto image ile Course image data type farklı */
                 };
-                _adminService.UpdateCourse(editedCourse);
+                await _courseService.UpdateCourseAsync(editedCourse);
                 return  RedirectToAction("Index");
             }
             else
