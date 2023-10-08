@@ -69,21 +69,21 @@
                         @if (!user.HasClaim(a => a.Type == ClaimTypes.Role))
                         {
                             <li class="nav-item d-lg-none">
-                                <a asp-controller="Auth" asp-action="Login" class="nav-link click-scroll">Sign In<span class="visually-hidden">(current)</span></a>
+                                <a asp-controller="Auth" asp-action="Login" class="nav-link">Sign In<span class="visually-hidden">(current)</span></a>
                             </li>
                             <li class="nav-item d-lg-none">
-                                <a asp-controller="Auth" asp-action="Register" class="nav-item nav-link click-scroll">Join For Free<span class="visually-hidden">(current)</span></a>
+                                <a asp-controller="Auth" asp-action="Register" class="nav-item nav-link">Join For Free<span class="visually-hidden">(current)</span></a>
                             </li>
                         }
                         else
                         {
                             @if (user.Claims(ClaimTypes.Role)[0] == "Admin")
                             {
-                                <li class="nav-item d-lg-none"><a class="nav-item nav-link click-scroll" asp-controller="Admin" asp-action="Index">Admin Panel</a></li>
+                                <li class="nav-item d-lg-none"><a class="nav-item nav-link" asp-controller="Admin" asp-action="Index">Admin Panel</a></li>
                             }
                             @if (user.Claims(ClaimTypes.Role)[0] == "Instructor")
                             {
-                                <li class="nav-item d-lg-none"><a class="nav-item nav-link click-scroll" asp-controller="Instructor" asp-action="Index">Instructor Panel</a></li>
+                                <li class="nav-item d-lg-none"><a class="nav-item nav-link" asp-controller="Instructor" asp-action="Index">Instructor Panel</a></li>
                             }
                             <li class="nav-item d-lg-none"><a class="nav-item nav-link click-scroll" asp-controller="Courses" asp-action="MyCourses">My Courses</a></li>
                             <li class="nav-item d-lg-none"><a class="nav-item nav-link click-scroll" asp-controller="Auth" asp-action="Logout">Logout</a></li>
