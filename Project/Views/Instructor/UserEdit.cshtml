@@ -1,0 +1,30 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@* @{
+     Layout = "_LayoutInstructor";
+} *@
+@using Project.Models
+@model UserToShowDto
+
+
+<form method="post" asp-action="UserEdit" enctype="multipart/form-data">
+    <input type="hidden" value="ID" id="ID" />
+    <div class="form-group">
+        <label asp-for="Username">Username</label>
+        <input asp-for="Username" class="form-control" placeholder="Title">
+        <span asp-validation-for="Username" class="text-danger"> </span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" class="form-control" placeholder="Email">
+        <span asp-validation-for="Email" class="text-danger"> </span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Role">Role</label>
+        <input asp-for="Role" class="form-control" placeholder="Role">
+        <span asp-validation-for="Role" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

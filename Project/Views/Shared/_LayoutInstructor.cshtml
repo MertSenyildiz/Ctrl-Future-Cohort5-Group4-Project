@@ -1,6 +1,7 @@
-﻿@using System.Security.Claims;
+﻿@using System.Security.Claims
 @{
     var user = Context.User;
+    var path = Context.Request.Path.ToString().ToLower();
 }
 <!DOCTYPE html>
 
@@ -19,8 +20,15 @@
     <link href="/templateContent/css/bootstrap-icons.css" rel="stylesheet">
 
     <link href="/templateContent/css/templatemo-topic-listing.css" rel="stylesheet">
+    <style>
+        .my-bg {
+            background: rgb(17,208,158);
+            background: linear-gradient(180deg, rgba(17,208,158,1) 0%, rgba(9,103,121,1) 41%, rgba(250,250,250,1) 100%);
+        }
+    </style>
 </head>
 <body id="top">
+
     <main>
 
         <nav class="navbar navbar-expand-lg">
@@ -45,50 +53,33 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-lg-5 me-lg-auto">
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" href="#section_1">Home</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link click-scroll" href="#section_2">Browse Categories</a>
-                        </li>
-
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Courses" asp-action="Index">Browse Courses</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link click-scroll" href="#section_3">How it works</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link click-scroll" href="#section_4">FAQs</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link click-scroll" href="#section_5">Contact</a>
                         </li>
 
                         @if (!user.HasClaim(a => a.Type == ClaimTypes.Role))
                         {
                             <li class="nav-item d-lg-none">
-                                <a asp-controller="Auth" asp-action="Login" class="nav-link click-scroll">Sign In<span class="visually-hidden">(current)</span></a>
+                                <a asp-controller="Auth" asp-action="Login" class="nav-link">Sign In<span class="visually-hidden">(current)</span></a>
                             </li>
                             <li class="nav-item d-lg-none">
-                                <a asp-controller="Auth" asp-action="Register" class="nav-item nav-link click-scroll">Join For Free<span class="visually-hidden">(current)</span></a>
+                                <a asp-controller="Auth" asp-action="Register" class="nav-item nav-link">Join For Free<span class="visually-hidden">(current)</span></a>
                             </li>
                         }
                         else
                         {
                             @if (user.Claims(ClaimTypes.Role)[0] == "Admin")
                             {
-                                <li class="nav-item d-lg-none"><a class="nav-item nav-link click-scroll" asp-controller="Admin" asp-action="Index">Admin Panel</a></li>
+                                <li class="nav-item d-lg-none"><a class="nav-item nav-link" asp-controller="Admin" asp-action="Index">Admin Panel</a></li>
                             }
                             @if (user.Claims(ClaimTypes.Role)[0] == "Instructor")
                             {
-                                <li class="nav-item d-lg-none"><a class="nav-item nav-link click-scroll" asp-controller="Instructor" asp-action="Index">Instructor Panel</a></li>
+                                <li class="nav-item d-lg-none"><a class="nav-item nav-link" asp-controller="Instructor" asp-action="Index">Instructor Panel</a></li>
                             }
-                            <li class="nav-item d-lg-none"><a class="nav-item nav-link click-scroll" asp-controller="Courses" asp-action="MyCourses">My Courses</a></li>
-                            <li class="nav-item d-lg-none"><a class="nav-item nav-link click-scroll" asp-controller="Auth" asp-action="Logout">Logout</a></li>
+                            <li class="nav-item d-lg-none"><a class="nav-item nav-link" asp-controller="Courses" asp-action="MyCourses">My Courses</a></li>
+                            <li class="nav-item d-lg-none"><a class="nav-item nav-link" asp-controller="Auth" asp-action="Logout">Logout</a></li>
                         }
                     </ul>
 
@@ -110,7 +101,7 @@
                                         }
                                         @if (user.Claims(ClaimTypes.Role)[0] == "Instructor")
                                         {
-                                            <li><a class="dropdown-item" href="#">Instructor Panel</a></li>
+                                            <li><a class="dropdown-item" asp-controller="Instructor" asp-action="Index">Instructor Panel</a></li>
                                         }
                                         <li><a class="dropdown-item" asp-controller="Courses" asp-action="MyCourses">My Courses</a></li>
                                         <li><hr class="dropdown-divider"></li>
@@ -123,10 +114,10 @@
                         {
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a asp-controller="Auth" asp-action="Login" class="nav-link click-scroll">Sign In<span class="visually-hidden">(current)</span></a>
+                                    <a asp-controller="Auth" asp-action="Login" class="nav-link">Sign In<span class="visually-hidden">(current)</span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a asp-controller="Auth" asp-action="Register" class="nav-item nav-link click-scroll">Join For Free<span class="visually-hidden">(current)</span></a>
+                                    <a asp-controller="Auth" asp-action="Register" class="nav-item nav-link">Join For Free<span class="visually-hidden">(current)</span></a>
                                 </li>
                             </ul>
                         }
@@ -134,16 +125,24 @@
                 </div>
             </div>
         </nav>
+        <section class="section-padding my-bg" id="section_1">
+            <div class="row">
+                <div class="col-md-2">
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        <li class="nav-item cursor-pointer"><a class="nav-link @(path == "/instructor" ? "active" : "")" asp-controller="Instructor" asp-action="Index">Instructor Dashboard</a></li>
 
+                        <li class="nav-item cursor-pointer"><a class="nav-link @(path == "/instructor/create" ? "active" : "")" asp-controller="Instructor" asp-action="Create">Create Course</a></li>
 
-
-
-        @RenderBody()
+                    </ul>
+                </div>
+                <div class="col-md-10">
+                    @RenderBody()
+                </div>
+            </div>
+        </section>
 
 
     </main>
-
-
     <footer class="site-footer section-padding">
         <div class="container">
             <div class="row">
@@ -214,5 +213,6 @@
     <script src="/templateContent/js/jquery.sticky.js"></script>
     <script src="/templateContent/js/click-scroll.js"></script>
     <script src="/templateContent/js/custom.js"></script>
+    <script src="/js/search.js"></script>
 </body>
 </html>

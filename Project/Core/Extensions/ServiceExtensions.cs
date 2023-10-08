@@ -27,6 +27,8 @@ namespace Project.Core.Extensions
                 services.AddSingleton<IAssignmentService, AssignmentManager>();
 
                 services.AddSingleton<IAdminService, AdministrationManager>();
+
+                services.AddSingleton<IInstructorService, InstructorManager>();
             }
 
             public static void InjectDbContextFactory(this IServiceCollection services, IConfiguration configuration)
