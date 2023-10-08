@@ -70,7 +70,7 @@
                         @if (!user.HasClaim(a => a.Type == ClaimTypes.Role))
                         {
                             <li class="nav-item d-lg-none">
-                                <a asp-controller="Auth" asp-action="Login" class="nav-link">Sign In<span class="visually-hidden">(current)</span></a>
+                                <a asp-controller="Auth" asp-action="Login" class="nav-item nav-link">Sign In<span class="visually-hidden">(current)</span></a>
                             </li>
                             <li class="nav-item d-lg-none">
                                 <a asp-controller="Auth" asp-action="Register" class="nav-item nav-link">Join For Free<span class="visually-hidden">(current)</span></a>
@@ -86,8 +86,8 @@
                             {
                                 <li class="nav-item d-lg-none"><a class="nav-item nav-link" asp-controller="Instructor" asp-action="Index">Instructor Panel</a></li>
                             }
-                            <li class="nav-item d-lg-none"><a class="nav-item nav-link click-scroll" asp-controller="Courses" asp-action="MyCourses">My Courses</a></li>
-                            <li class="nav-item d-lg-none"><a class="nav-item nav-link click-scroll" asp-controller="Auth" asp-action="Logout">Logout</a></li>
+                            <li class="nav-item d-lg-none"><a class="nav-item nav-link" asp-controller="Courses" asp-action="MyCourses">My Courses</a></li>
+                            <li class="nav-item d-lg-none"><a class="nav-item nav-link" asp-controller="Auth" asp-action="Logout">Logout</a></li>
                         }
                     </ul>
 
@@ -122,10 +122,10 @@
                         {
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a asp-controller="Auth" asp-action="Login" class="nav-link click-scroll">Sign In<span class="visually-hidden">(current)</span></a>
+                                    <a asp-controller="Auth" asp-action="Login" class="nav-item nav-link">Sign In<span class="visually-hidden">(current)</span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a asp-controller="Auth" asp-action="Register" class="nav-item nav-link click-scroll">Join For Free<span class="visually-hidden">(current)</span></a>
+                                    <a asp-controller="Auth" asp-action="Register" class="nav-item nav-link">Join For Free<span class="visually-hidden">(current)</span></a>
                                 </li>
                             </ul>
                         }
