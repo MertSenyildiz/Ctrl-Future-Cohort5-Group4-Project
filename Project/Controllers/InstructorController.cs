@@ -26,7 +26,7 @@ namespace Project.Controllers
         [HttpPost]
         public IActionResult AddCourse(CourseToAddDto courseToAdd)
         {
-            // Implement the logic to add a course using _courseService.CreateCourse(courseToAdd);
+            // Implement the logic to add a course 
             // Redirect to appropriate view or action
             _courseService.CreateCourseAsync(courseToAdd);
             return RedirectToAction("Index");
@@ -35,7 +35,7 @@ namespace Project.Controllers
         [HttpPost]
         public IActionResult DeleteCourse(Guid courseId)
         {
-            // Implement the logic to delete a course using _courseService.DeleteCourse(courseId);
+            // Implement the logic to delete a course
             // Redirect to appropriate view or action
             _courseService.DeleteCourse(courseId);
             return RedirectToAction("Index");
@@ -44,7 +44,7 @@ namespace Project.Controllers
         [HttpPost]
         public IActionResult DeleteAssignment(Guid assignmentId)
         {
-            // Implement the logic to delete an assignment using _assignmentService.DeleteAssignment(assignmentId);
+            // Implement the logic to delete an assignment
             // Redirect to appropriate view or action
             _assignmentService.DeleteAssignment(assignmentId);
             return RedirectToAction("Index");
@@ -53,7 +53,7 @@ namespace Project.Controllers
         [HttpPost]
         public IActionResult CreateAssignment(Assignment assignment)
         {
-            // Implement the logic to create an assignment using _assignmentService.CreateAssignment(assignment);
+            // Implement the logic to create an assignment
             // Redirect to appropriate view or action
             _assignmentService.CreateAssignment(assignment);
             return RedirectToAction("Index");
