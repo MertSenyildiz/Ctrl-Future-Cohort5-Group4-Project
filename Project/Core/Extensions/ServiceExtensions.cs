@@ -33,12 +33,22 @@ namespace Project.Core.Extensions
 
             public static void InjectDbContextFactory(this IServiceCollection services, IConfiguration configuration)
             {
-            services.AddDbContextFactory<ProjectDbContext>(
+            var isDevelopment = string.Equals(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"), "development", StringComparison.InvariantCultureIgnoreCase);
+            if(isDevelopment)
+            {
+                Console.Error.WriteLine("development");
+                services.AddDbContextFactory<ProjectDbContext>(
                 options => options.UseSqlServer(configuration.GetConnectionString("ProjectConnectionString"))
             );
-            //services.AddDbContextFactory<ProjectDbContext>(
-            //    options => options.UseSqlServer(configuration.GetConnectionString("AzureConnectionString"))
-            //);
+            }
+            else
+            {
+                Console.Error.WriteLine("not in development");
+                services.AddDbContextFactory<ProjectDbContext>(
+                options => options.UseSqlServer(configuration.GetConnectionString("AzureConnectionString"))
+            );
+            }
+            
         }
 
             public static void InjectConfigurableServices(this IServiceCollection services, IConfiguration configuration)
