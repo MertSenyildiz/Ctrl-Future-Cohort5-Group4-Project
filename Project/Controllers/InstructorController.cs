@@ -24,7 +24,8 @@ namespace Project.Controllers
         [Authorize(Roles = "Instructor")]
         public IActionResult Index()
         {
-            var courses = _courseService.GetAllCoursesWithDetail(); /* Bringing all the table from database and drop into your table */
+            var id = Guid.Parse(HttpContext.User.Claims("id")[0]);
+            var courses = _courseService.GetCoursesWithDetailsByInstructor(id); /* Bringing all the table from database and drop into your table */
 
             return View(courses);
         }
