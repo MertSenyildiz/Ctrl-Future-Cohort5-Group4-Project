@@ -1,12 +1,25 @@
+@{ 
+    Layout = "_LayoutAdmin";
+}
 @using Project.Data.Enum
 @model CourseToAddDto
 
-<form method="post" asp-action="Edit" enctype="multipart/form-data">
+<form class="custom-form" method="post" asp-action="Edit" enctype="multipart/form-data">
     <input type="hidden" value="ID" id="ID" />
     <div class="form-group">
         <label asp-for="Title">Title</label>
         <input asp-for="Title" class="form-control" placeholder="Title">
         <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Instuctor">Instructor</label>
+        <select class="form-control" name="InstructorID" id="Instructor" >
+            @foreach (var instructor in ViewData["Instructors"] as List<UserToShowDto>)
+            {
+                <option selected="@(instructor.ID==Model.InstructorID?"selected":"")" value="@instructor.ID">@instructor.Username</option>
+            }
+        </select>
+        <span for="Instructor" class="text-danger"> </span>
     </div>
     <div class="form-group">
         <label asp-for="Description">Description</label>
@@ -20,11 +33,11 @@
         </select>
         <span asp-validation-for="Category" class="text-danger"></span>
     </div>
-   <div class="form-group">
+    <div class="form-group">
         <label asp-for="ImageFile">ImageURL</label>
         <input asp-for="ImageFile" class="form-control" placeholder="Image">
         <span asp-validation-for="ImageFile" class="text-danger"></span>
     </div>
-    
+
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>

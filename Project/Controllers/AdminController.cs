@@ -53,7 +53,9 @@ namespace Project.Controllers
                 Title = course.Title,
                 Description = course.Description,
                 Category = course.Category,
+                InstructorID= course.InstructorID,
             };
+            ViewData["Instructors"] = _userService.GetByRole("Instructor");
             return View(courseDTO);
         }
         
@@ -74,7 +76,7 @@ namespace Project.Controllers
                     ID = id,
                     Title = _courseDto.Title,
                     Description = _courseDto.Description,
-                    InstructorID = _course.InstructorID,
+                    InstructorID = _courseDto.InstructorID,
                     Category = _courseDto.Category,
                     EnrollmentCount = _course.EnrollmentCount,
                     ImageUrl = _course.ImageUrl, 

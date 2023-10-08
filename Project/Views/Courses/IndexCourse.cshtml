@@ -52,7 +52,7 @@
                                 if (userRole == "Admin" || (userRole == "Instructor" && userId == Model.InstructorID))
                                 {
                                     <li class="list-inline-item">
-                                        <form method="post" asp-controller="Courses" asp-action="EditCourse" asp-route-courseId="@Model.ID">
+                                        <form method="get" asp-controller="@userRole" asp-action="Edit" asp-route-id="@Model.ID">
                                             <button class="btn custom-icon bi-pencil"></button>
                                         </form>
                                     </li>

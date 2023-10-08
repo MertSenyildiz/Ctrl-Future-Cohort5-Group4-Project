@@ -131,23 +131,26 @@
                 </div>
             </div>
         </nav>
-        <section class="section-padding my-bg" id="section_1">
-            <div class="row">
-                <div class="col-md-2">
-                    <ul class="nav nav-pills flex-column mb-auto">
-                        <li class="nav-item cursor-pointer"><a class="nav-link @(path == "/admin" ? "active" : "")" asp-controller="Admin" asp-action="Index">Admin Dashboard</a></li>
+        <section class="section-padding my-bg" id="section_1" style="min-height:70%;">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-2 col-lg-2 border-end border-2">
+                        <ul class="nav nav-pills flex-column mb-auto">
+                            <li class="nav-item cursor-pointer"><a class="nav-link @(path == "/admin" ? "active" : "")" asp-controller="Admin" asp-action="Index">Admin Dashboard</a></li>
 
-                        <li class="nav-item cursor-pointer"><a class="nav-link @(path == "/admin/usermanager" ? "active" : "")" asp-controller="Admin" asp-action="UserManager">UserManager</a></li>
+                            <li class="nav-item cursor-pointer"><a class="nav-link @(path == "/admin/usermanager" ? "active" : "")" asp-controller="Admin" asp-action="UserManager">UserManager</a></li>
 
-                        <li class="nav-item cursor-pointer"><a class="nav-link @(path == "/admin/create" ? "active" : "")" asp-controller="Admin" asp-action="Create">Create Course</a></li>
-                        
-                    </ul>
-                    <hr class=" vertical-line">
-                </div>
-                <div class="col-md-10">
-                    @RenderBody()
+                            <li class="nav-item cursor-pointer"><a class="nav-link @(path == "/admin/create" ? "active" : "")" asp-controller="Admin" asp-action="Create">Create Course</a></li>
+
+                        </ul>
+                        <hr class=" vertical-line">
+                    </div>
+                    <div class="col-md-10 col-lg-10">
+                        @RenderBody()
+                    </div>
                 </div>
             </div>
+            
         </section>
 
 
