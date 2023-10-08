@@ -171,6 +171,12 @@
                                     <div class="accordion" id="accordionExample">
                                         @for (int i = 0; i < assignments.Count; i++)
                                         {
+                                            string color="bg-success";
+                                            var time = DateOnly.FromDateTime(assignments[i].DueDate).CompareTo(DateOnly.FromDateTime(DateTime.Now));
+                                            if (time < 0)
+                                                color = "bg-danger";
+                                            else if (time == 0)
+                                                color = "bg-warning";
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header" id="heading@(i)">
                                                     <button class="accordion-button @(i==0?"":"collapsed")" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@(i)" aria-expanded="@(i==0)" aria-controls="collapse@(i)">
@@ -179,7 +185,7 @@
                                                 </h2>
 
                                                 <div id="collapse@(i)" class="accordion-collapse collapse @(i==0?"show":"")" aria-labelledby="heading@(i)" data-bs-parent="#accordionExample">
-                                                    <div class="accordion-body">
+                                                    <div class="accordion-body @color">
                                                         <div class="row m-auto">
                                                             <div class="col-lg-8 col-8">
                                                                 @assignments[i].Description
@@ -193,7 +199,7 @@
                                                                     if (userRole == "Admin" || (userRole == "Instructor" && userId == Model.InstructorID))
                                                                     {
                                                                         <form method="post" asp-controller="Assignments" asp-action="DeleteAssignment" asp-route-courseId="@Model.ID" asp-route-assignmentId="@assignments[i].ID">
-                                                                            <button class="btn bi-trash text-bg-danger"></button>
+                                                                            <button class="btn"><span class="bi-trash p-4" sstyle="font-size: 80px;"></span></button>
                                                                         </form>
                                                                     }
                                                                 }
