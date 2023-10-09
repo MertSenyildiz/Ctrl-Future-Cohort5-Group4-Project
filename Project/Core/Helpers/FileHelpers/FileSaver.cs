@@ -23,7 +23,7 @@ namespace Project.Core.Helpers.FileHelpers
             return filePath.Replace("wwwroot","");
         }
 
-        public void DeleteFile(string filePath)
+        public Task DeleteFileAsync(string filePath)
         {
             var imgPath = Path.Combine(path, defaultImage);
             var deletePath = $"{Environment.CurrentDirectory}/wwwroot/{filePath}".Replace("/", "\\");
@@ -34,6 +34,8 @@ namespace Project.Core.Helpers.FileHelpers
                     File.Delete(deletePath);
                 }
             }
+            return Task.CompletedTask;
         }
+
     }
 }

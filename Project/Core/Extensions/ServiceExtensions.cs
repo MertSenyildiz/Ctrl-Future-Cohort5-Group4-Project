@@ -53,8 +53,14 @@ namespace Project.Core.Extensions
 
             public static void InjectConfigurableServices(this IServiceCollection services, IConfiguration configuration)
             {
-                FileSaver fileSaver = new FileSaver(configuration.GetSection("FileFolder").Get<string>());
-                services.AddSingleton<IFileHelper>(fileSaver);
+            IFileHelper fileSaver;
+            var isDevelopment = string.Equals(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"), "development", StringComparison.InvariantCultureIgnoreCase);
+            if (isDevelopment)
+                fileSaver = new FileSaver(configuration.GetSection("FileFolder").Get<string>());
+            else
+                fileSaver = new AzureBlobStorageHelper(configuration.GetConnectionString("AzureBlobConnectionString"),configuration.GetSection("AzureFileFolder").Get<string>());
+                
+            services.AddSingleton<IFileHelper>(fileSaver);
             }
     }
 }
