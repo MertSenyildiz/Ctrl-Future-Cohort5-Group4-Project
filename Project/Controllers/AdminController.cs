@@ -40,6 +40,8 @@ namespace Project.Controllers
             return RedirectToAction("Index");
         }
         
+        /*Admin */
+
         public async Task<IActionResult> Detail(Guid id)
         {
             Course course = _adminService.GetCourseById(id);
