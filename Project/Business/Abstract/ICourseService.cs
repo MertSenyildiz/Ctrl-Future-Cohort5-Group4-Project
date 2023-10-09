@@ -32,7 +32,7 @@ namespace Project.Business.Abstract
         void IncrementEnrollmentCout(Guid courseId);
         void DecrementEnrollmentCout(Guid courseId);
         Task CreateCourseAsync(CourseToAddDto course);
-        void DeleteCourse(Guid courseId);
+        Task DeleteCourseAsync(Guid courseId);
 
 
         [Obsolete("UpdateCourse is deprecated, please use UpdateCourseAsync instead.")]

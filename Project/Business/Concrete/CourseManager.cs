@@ -48,7 +48,7 @@ namespace Project.Business.Concrete
                 if (course.ImageFile != null)
                 {
                     var path = courseToUpdate.ImageUrl;
-                    _fileSaver.DeleteFile(path);
+                    await _fileSaver.DeleteFileAsync(path);
                     courseToUpdate.ImageUrl = await _fileSaver.SaveFileAsync(course.ImageFile);
                 }
                 _courseDal.Update(courseToUpdate);
@@ -65,10 +65,10 @@ namespace Project.Business.Concrete
             _courseDal.Update(course);
         }
 
-        public void DeleteCourse(Guid courseId)
+        public async Task DeleteCourseAsync(Guid courseId)
         {
             var course = _courseDal.Get(x => x.ID == courseId);
-            _fileSaver.DeleteFile(course.ImageUrl);
+            await _fileSaver.DeleteFileAsync(course.ImageUrl);
             _courseDal.Delete(course);
         }
 

@@ -133,7 +133,7 @@ namespace Project.Controllers
                 else if (Request.Headers["Referer"].Any())
                 {
                     var address = new Uri(Request.Headers["Referer"]);
-                    if (address.PathAndQuery != "/Auth/Login")
+                    if (address.PathAndQuery != "/Auth/Register")
                         ViewData["returnUrl"] = address.PathAndQuery;
                 }
                 else

@@ -3,6 +3,6 @@
     public interface IFileHelper
     {
         Task<string> SaveFileAsync(IFormFile file);
-        void DeleteFile(string filePath);
+        Task DeleteFileAsync(string filePath);
     }
 }
