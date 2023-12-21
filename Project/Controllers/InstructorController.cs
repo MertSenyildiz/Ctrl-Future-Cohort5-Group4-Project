@@ -6,15 +6,17 @@ using Project.Models;
 
 namespace Project.Controllers
 {
+    [Authorize(Roles ="Instructor")]
     public class InstructorController : Controller
     {
         IInstructorService _instructorService;
         ICourseService _courseService;
-
-        public InstructorController(IInstructorService instructorService,ICourseService courseService)
+        IUserService _userService;
+        public InstructorController(IInstructorService instructorService,ICourseService courseService, IUserService userService)
         {
             _instructorService = instructorService;
             _courseService = courseService;
+            _userService = userService;
         }
         [Authorize(Roles = "Instructor")]
         public ActionResult Create()
@@ -53,7 +55,9 @@ namespace Project.Controllers
                 Title = course.Title,
                 Description = course.Description,
                 Category = course.Category,
+                InstructorID = course.InstructorID,
             };
+            ViewData["Instructors"] = _userService.GetByRole("Instructor");
             return View(courseDTO);
         }
         [HttpPost]
@@ -68,18 +72,17 @@ namespace Project.Controllers
             if (_course != null)
             {
                 //var photoResult = await _photoService.AddPhotoAsync(clubVM.Image);
-                var editedCourse = new Course
+                var editedCourse = new CourseToUpdateDto
                 {
                     ID = id,
                     Title = _courseDto.Title,
                     Description = _courseDto.Description,
                     InstructorID = _course.InstructorID,
                     Category = _courseDto.Category,
-                    EnrollmentCount = _course.EnrollmentCount,
-                    ImageUrl = _course.ImageUrl,
+                    ImageFile = _courseDto.ImageFile,
                     /* courseDto image ile Course image data type farklı */
                 };
-                _instructorService.UpdateCourse(editedCourse);
+                await _courseService.UpdateCourseAsync(editedCourse);
                 return RedirectToAction("Index");
             }
             else

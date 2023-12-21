@@ -35,9 +35,9 @@ namespace Project.Controllers
         }
         [Authorize(Roles ="Admin,Instructor")]
         [HttpPost]
-        public IActionResult DeleteCourse(string courseId)
+        public async Task<IActionResult> DeleteCourse(string courseId)
         {
-            _courseService.DeleteCourse(Guid.Parse(courseId));
+            await _courseService.DeleteCourseAsync(Guid.Parse(courseId));
             return RedirectToAction("Index");
         }
         public IActionResult Index(string? nameFilter, int? categoryFilter)
